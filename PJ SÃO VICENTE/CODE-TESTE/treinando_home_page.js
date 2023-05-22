@@ -173,6 +173,10 @@ function bnt_calendario(){
         div_missa.style.display = 'none';
     }
 }
+let el = document.querySelector('.number-days')
+for(i = 1; i <= 31; i++){
+    el.innerHTML+='<span>'+i+'</span>';
+}
 
 // aqui fica voltado para a página de arquivos
 function bnt_arquivos(){

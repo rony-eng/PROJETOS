@@ -528,12 +528,56 @@ textarea::-webkit-scrollbar-thumb {
     width: 1300px;
     height: 629px;
     margin-left: 60px;
-    display: none; /* display none*/
+    display: flex; /* display none*/
     justify-content: center;
     align-items: stretch;
     flex-wrap: wrap;
-    gap: 15px;
-    background-color: black;
+}
+.div_interable_calendario{
+    width: 630px;
+    height: 629px;
+    background-color: aqua;
+}
+.wraper{
+    width: 590px;
+    padding: 20px;
+    background-color: white;
+    display: flex;
+    flex-wrap: wrap;
+}
+.days-week{
+    margin-top: 150px;
+    margin-left: -20px;
+    display: flex;
+    width: 590px;
+    height: 20px;
+    
+}
+.number-days{
+    margin-top: -150px;
+    margin-left: 0px;
+    margin-right: -30px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap;
+}
+.days-week span{
+    margin: 0px;
+    margin-left: 40px;
+    color: #321f01;
+    display: inline;
+    width: 50px;
+    border-style: inset;
+    border-color: #321f01;
+}
+.number-days span{
+    margin: 1px;
+    color: #321f01;
+    display: inline-block;
+    width: 14.2%;
+    border-style: inset;
+    border-color: #321f01;
 }
 
 
@@ -556,7 +600,7 @@ textarea::-webkit-scrollbar-thumb {
     width: 1300px;
     height: 629px;
     margin-left: 60px;
-    display: flex; /* display none*/
+    display: none; /* display none*/
     justify-content: center;
     align-items: stretch;
     flex-wrap: wrap;
