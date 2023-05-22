@@ -1,0 +1,27 @@
+body{
+    margin: 10px 10px;
+    margin-right: 0px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    
+}
+.b1{
+    width: 100px;
+    height: 600px;
+    background-color: black;
+    position: fixed;
+    transition-delay: all 0.3s;
+
+    display: block;
+    margin-top: 50px;
+    margin-left: -10px;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+.button{
+    width: 50px;
+    height: 30px;
+    margin-left: 10px;
+
+}

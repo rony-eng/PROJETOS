@@ -1,0 +1,26 @@
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+.lampanda_on{
+    display: block;
+    width: 200px;
+}
+.lampanda_off{
+    display: none;
+    width: 200px;
+}
+.bnt_on{
+    display: none;
+    margin-top: 300px;
+    margin-left: -130px;
+    cursor: pointer;
+}
+.bnt_off{
+    display: block;
+    margin-top: 300px;
+    margin-left: -130px;
+    cursor: pointer;
+}

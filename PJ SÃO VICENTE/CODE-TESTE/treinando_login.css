@@ -1,0 +1,373 @@
+body{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    align-content: center;
+    background-color: rgba(210, 117, 5, 0.875);
+}
+.divp{
+    width: 800px;
+    height: 550px;
+    background-color: aliceblue;
+    display: flex;
+    align-items: stretch;
+    box-shadow: 10px 10px 25px;
+    border-radius: 15px;
+    margin-top: 20px;
+}
+/* estilo para bloco 1 onde fica a foto e o texto de são
+vicente */
+.b1{
+    width: 300px;
+    background-color: rgba(210, 117, 5, 0.875);
+    background-size: 900px;
+    background-position: -425px 0px;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.b1_ft{
+    width: 200px;
+    height: 200px;
+    background-image: url(sv_perfil.png);
+    background-size: 210px;
+    border-radius: 100px;
+
+}
+.tex_sv{
+    width: 200px;
+    height: 300px;
+    color: white;
+    font-size: 20px;
+    padding: 10px;
+    text-align: center;
+}
+/* estilo para o bloco 2 */
+.b2{
+    width: 500px;
+    background-color: white;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+.ajuda_login{
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    background-color: rgba(210, 117, 5, 0.875);
+    font-size: 20px;
+    color: white;
+    border-radius: 50px;
+    position: absolute;
+    transition: all 0.5s;
+    margin: 10px 15px
+}
+.ajuda_login:hover{
+    width: 470px;
+    height: 50px;
+    background-color: rgba(210, 117, 5, 0.875);
+    border-radius: 50px;
+    margin: 10px 15px;
+    cursor: auto;
+}
+.b2 .ajuda_login h1{
+    position: absolute;
+    font-size: 40px;
+    margin: 2px 13px;
+    color: white;
+}
+.b2 .ajuda_login p{
+    display: none;
+    transition: all 0.3s;
+}
+.ajuda_login:hover p{
+    display: block;
+    position: absolute;
+    margin: 7px 60px;
+    font-size: 15px;
+    text-align: left;
+    color: white;
+}
+.ajuda_login button{
+    display: none;
+    transition: all 0.3s;
+}
+.ajuda_login:hover button{
+    display: block;
+    position: absolute;
+    margin: 5px 420px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+    background-color: white;
+    border-style: none;
+    cursor: pointer;
+}
+.b2 .t_login{
+    position: relative;
+    margin: 120px 118px;
+    font-size: 50px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgba(210, 117, 5, 0.875);
+}
+.b2 .p_login{
+    position: relative;
+    margin: -120px 60px;
+    font-size: 15px;
+    text-align: center;
+    color: rgba(210, 117, 5, 0.875);
+}
+.icone_usuario{
+    position: absolute;
+    margin: 165px 40px;
+    width: 25px;
+}
+.input_usuario{
+    position: absolute;
+    width: 250px;
+    height: 40px;
+    margin: 160px 75px;
+    padding: 0px 50px;
+    font-size: 17px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 15px;
+    border-style: none;
+    border-color: rgba(210, 117, 5, 0.875);
+    color: rgba(210, 117, 5, 0.875);
+    box-shadow: 10px 10px 25px;
+}
+.icone_senha{
+    position: absolute;
+    margin: 245px 35px;
+    width: 30px;
+}
+.input_senha{
+    position: absolute;
+    width: 250px;
+    height: 40px;
+    margin: 240px 75px;
+    padding: 0px 50px;
+    font-size: 17px;
+    text-align: center;
+    border-radius: 15px;
+    border-style: none;
+    border-color: rgba(210, 117, 5, 0.875);
+    color: rgba(210, 117, 5, 0.875);
+    box-shadow: 10px 10px 25px;
+}
+.bnt_acessar{
+    position: absolute;
+    margin: 330px 145px;
+    width: 100px;
+    height: 30px;
+    border-radius: 10px;
+    border-style: none;
+    background-color: rgba(210, 117, 5, 0.875);
+    color: white;
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    cursor: pointer;
+}
+.bnt_acessar:hover{
+    position: absolute;
+    margin: 330px 145px;
+    width: 100px;
+    height: 30px;
+    border-radius: 10px;
+    border-style: double;
+    border-color: rgba(210, 117, 5, 0.875);
+    background-color: white;
+    color: rgba(210, 117, 5, 0.875);
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    cursor: pointer;
+}
+.bnt_cadastrar{
+    position: absolute;
+    margin: 330px 255px;
+    width: 100px;
+    height: 30px;
+    border-radius: 10px;
+    border-style: none;
+    background-color: rgba(210, 117, 5, 0.875);
+    color: white;
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    cursor: pointer;
+}
+.bnt_cadastrar:hover{
+    position: absolute;
+    margin: 330px 255px;
+    width: 100px;
+    height: 30px;
+    border-radius: 10px;
+    border-style: double;
+    border-color: rgba(210, 117, 5, 0.875);
+    background-color: white;
+    color: rgba(210, 117, 5, 0.875);
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    cursor: pointer;
+}
+
+/* estilo para página de cadastro*/
+.div_cadastrar{
+    position: absolute;
+    display: none;
+    width: 500px;
+    height: 550px;
+    margin-top: -97px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    background-color: white;
+}
+.div_cadastrar .t_cadastro{
+    position: relative;
+    margin: 50px 118px;
+    font-size: 50px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgba(210, 117, 5, 0.875);
+}
+.div_cadastrar .p_cadastro{
+    position: relative;
+    margin: -50px 60px;
+    font-size: 15px;
+    text-align: center;
+    color: rgba(210, 117, 5, 0.875);
+}
+.icone_usuario_c{
+    position: absolute;
+    margin: 85px 35px;
+    width: 30px;
+}
+.inp_usuario{
+    position: absolute;
+    width: 250px;
+    height: 40px;
+    margin: 80px 75px;
+    padding: 0px 50px;
+    font-size: 17px;
+    text-align: center;
+    border-radius: 15px;
+    border-style: none;
+    border-color: rgba(210, 117, 5, 0.875);
+    color: rgba(210, 117, 5, 0.875);
+    box-shadow: 10px 10px 25px;
+}
+.icone_email_c{
+    position: absolute;
+    margin: 145px 35px;
+    width: 30px;
+    /* a cor da imagem é #D75808 */
+}
+.inp_email{
+    position: absolute;
+    width: 250px;
+    height: 40px;
+    margin: 140px 75px;
+    padding: 0px 50px;
+    font-size: 17px;
+    text-align: center;
+    border-radius: 15px;
+    border-style: none;
+    border-color: rgba(210, 117, 5, 0.875);
+    color: rgba(210, 117, 5, 0.875);
+    box-shadow: 10px 10px 25px;
+}
+.icone_senha_c{
+    position: absolute;
+    margin: 205px 35px;
+    width: 30px;
+}
+.inp_senha{
+    position: absolute;
+    width: 250px;
+    height: 40px;
+    margin: 200px 75px;
+    padding: 0px 50px;
+    font-size: 17px;
+    text-align: center;
+    border-radius: 15px;
+    border-style: none;
+    border-color: rgba(210, 117, 5, 0.875);
+    color: rgba(210, 117, 5, 0.875);
+    box-shadow: 10px 10px 25px;
+}
+.icone_csenha_c{
+    position: absolute;
+    margin: 265px 35px;
+    width: 30px;
+}
+.inp_csenha{
+    position: absolute;
+    width: 250px;
+    height: 40px;
+    margin: 260px 75px;
+    padding: 0px 50px;
+    font-size: 17px;
+    text-align: center;
+    border-radius: 15px;
+    border-style: none;
+    border-color: rgba(210, 117, 5, 0.875);
+    color: rgba(210, 117, 5, 0.875);
+    box-shadow: 10px 10px 25px;
+}
+.botão_p_cadastrar{
+    position: absolute;
+    margin: 330px 145px;
+    width: 100px;
+    height: 30px;
+    border-radius: 10px;
+    border-style: none;
+    background-color: rgba(210, 117, 5, 0.875);
+    color: white;
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    cursor: pointer;
+}
+.botão_p_cadastrar:hover{
+    position: absolute;
+    margin: 330px 145px;
+    width: 100px;
+    height: 30px;
+    border-radius: 10px;
+    border-style: double;
+    border-color: rgba(210, 117, 5, 0.875);
+    background-color: white;
+    color: rgba(210, 117, 5, 0.875);
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    cursor: pointer;
+}
+.botão_p_login{
+    position: absolute;
+    margin: 330px 255px;
+    width: 100px;
+    height: 30px;
+    border-radius: 10px;
+    border-style: none;
+    background-color: rgba(210, 117, 5, 0.875);
+    color: white;
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    cursor: pointer;
+}
+.botão_p_login:hover{
+    position: absolute;
+    margin: 330px 255px;
+    width: 100px;
+    height: 30px;
+    border-radius: 10px;
+    border-style: double;
+    border-color: rgba(210, 117, 5, 0.875);
+    background-color: white;
+    color: rgba(210, 117, 5, 0.875);
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    cursor: pointer;
+}

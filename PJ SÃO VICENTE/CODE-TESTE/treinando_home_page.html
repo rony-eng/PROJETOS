@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="treinando_home_page.css">
+        <script src="treinando_home_page.js"></script>
+        <title>Home Page</title>
+    </head>
+    <body>
+        <!-- Bloco voltado para o menu-->
+        <nav class="menu">
+            <button class="bnt_perfil" onclick="bnt_perfil()"></button>
+            <button class="bnt_missa" onclick="bnt_missa()">M</button>
+            <button class="bnt_eventos" onclick="bnt_eventos()">E</button>
+            <button class="bnt_calendario" onclick="bnt_calendario()">C</button>
+            <button class="bnt_arquivos" onclick="bnt_arquivos()">A</button>
+            <button class="bnt_configuracoes" onclick="bnt_configuracoes()">C</button>
+        </nav>
+
+
+        <!-- Bloco voltado para a página inicial -->
+        <div class="div_hp" id="div_hp">
+            <div class="img_hp"></div>
+            <div class="text_hp">
+                <h1 class="title_sv1">São Vicente</h1>
+                <h1 class="title_sv2">de Paulo</h1>
+                <p>Vicente de Paulo (1581-1660), viveu numa época dificil e confusa da França, cuja população oscilava entre 17 e 20 milhões de habitantes.
+                    O povo passava por tremendas dificuldades, atormentado por uma mortalidade infantil de 50%, a média de idade não passava de 25 anos e o
+                    analfabetismo beirava os 90%.
+                    Este quadro resultava das constantes guerras religiosas, da grande 'Guerra dos Trinta Anos' (1618-1648) e de inúmeros pequenos conflitos
+                    internos que destruíram o país, tanto nas grandes cidades, como no campo, onde a produção agrícola era dizimada, fazendo com que o povo fosse
+                    mal alimentado e muito maltratado.
+                    As duas classes dominantes viviam momentos opostos. A nobreza empobrecia pouco a pouco, entre outras razões, por causa das guerras e lutas
+                    internas.<br><br> Enquanto isso, o clero católico, dono de dois terços do território nacional, se fortalecia cada vez mais, reunindo 123 bispados
+                    e 15 arcebispados com suas 152.000 igrejas ou capelas e 40.000 conventos e algo em torno de 266.000 eclesiásticos, 188.000 religiosos.
+                    O lamentável estado no qual o país se encontrava e a própria maneira da Igreja ser, formavam terra fértil para o enfraquecimento moral da vida
+                    das pessoas e de promiscuidade em geral. Situação esta também favorável ao crescimento do protestantismo e do ateísmo.
+                </p>
+                <button class="bnt_historia_sv" onclick="bnt_historia_sv()">Leia mais</button>
+            </div>
+        </div>
+
+
+        <!-- Bloco voltado para a página da história de são vicente-->
+        <div class="historia_sv" id="historia_sv">
+            <div class="img_historia_sv"></div>
+            <div class="title_historia_sv">
+                <h1>São Vicente de Paulo</h1>
+            </div>
+            <div class="texto_historia_sv">
+                <p>Vicente de Paulo (1581-1660), viveu numa época dificil e confusa da França, cuja população oscilava entre 17 e 20 milhões de habitantes.
+                    O povo passava por tremendas dificuldades, atormentado por uma mortalidade infantil de 50%, a média de idade não passava de 25 anos e o
+                    analfabetismo beirava os 90%.
+                    Este quadro resultava das constantes guerras religiosas, da grande 'Guerra dos Trinta Anos' (1618-1648) e de inúmeros pequenos conflitos
+                    internos que destruíram o país, tanto nas grandes cidades, como no campo, onde a produção agrícola era dizimada, fazendo com que o povo fosse
+                    mal alimentado e muito maltratado.
+                    As duas classes dominantes viviam momentos opostos. A nobreza empobrecia pouco a pouco, entre outras razões, por causa das guerras e lutas
+                    internas.<br><br> Enquanto isso, o clero católico, dono de dois terços do território nacional, se fortalecia cada vez mais, reunindo 123 bispados
+                    e 15 arcebispados com suas 152.000 igrejas ou capelas e 40.000 conventos e algo em torno de 266.000 eclesiásticos, 188.000 religiosos.
+                    O lamentável estado no qual o país se encontrava e a própria maneira da Igreja ser, formavam terra fértil para o enfraquecimento moral da vida
+                    das pessoas e de promiscuidade em geral. Situação esta também favorável ao crescimento do protestantismo e do ateísmo.
+                </p>
+                
+                <h2>Nesta realidade encontramos o jovem Vicent de Paul</h2>
+                <p>
+                    Vicente nasceu em 1581 em Pouy, como terceiro filho de uma família pobre, de camponeses. Fez seus estudos básicos entre 1595 e 1597.
+                    Cursou Teologia em Tolosa, entre 1597 e 1604, e se ordenou sacerdote já em 1600. Em 1610, se transferiu para Paris, assumindo a tarefa de capelão
+                    da Rainha Margarida de Valois. Em 1612, foi nomeado vigário de Clichy e em 1613, preceptor na família nobre dos de Gondi.
+                </p>
+            </div>
+            <button class="bnt_sair_historia_sv" onclick="bnt_sair_historia_sv()">Voltar</button>
+        </div>
+
+
+        <!-- Bloco voltado para a página de perfil-->
+        <div class="div_perfil" id="div_perfil">
+            <div class="b1_div_perfil">
+                <div class="img_div_perfil"></div>
+                <button class="bnt_img_div_perfil" id="bnt_img_div_perfil" onclick="bnt_img_div_perfil()">Upload</button>
+            </div>
+            <div class="b2_div_perfil">
+                <h1>Olá, bem vindo!</h1>
+                <h2>São Vicente de Paulo</h2>
+                <p>Ao lado está sua foto de perfil, abaixo suas informações de login, nome, email, idade e usuário, para mudanças em suas informações
+                    vá as configurações e conseguirá alterar seus dados. Entretanto, mais abaixo está o botão para troca de foto de perfil, se assim desejar.
+                </p>
+                <h2 class="nome_div_perfil">Nome:</h2>
+                <h2 class="email_div_perfil">Email:</h2>
+                <h2 class="idade_div_perfil">Idade:</h2>
+                <h2 class="usuario_div_perfil">Usuário:</h2>
+            </div>
+        </div>
+
+
+        <!-- Bloco voltado para a página de adicionar a missa e intenções-->
+        <div class="div_missa" id="div_missa">
+            <div class="b1_div_missa">
+                <div class="texto_div_missa">
+                    <h1 class="capela_texto_div_missa">Capela</h1>
+                    <h1 class="sv_texto_div_missa">São Vicente</h1>
+                    <h2 class="subtitle_texto_div_missa">Missas e Intenções</h2>
+                    <p class="p_texto_div_missa">Ao lado adicione a missa que deseja adicionar, a data, horário e as intenções, ao termino clique no botão adicionar e confirme as informações, caso necessário reescreva ou confirme para encerrar.</p>
+                </div>
+            </div>
+            <div class="b2_div_missa">
+                <div class="inputs_div_missa">
+                    <input type="text" class="inp1_div_missa" id="inp1_div_missa" placeholder="Missa">
+                    <input type="date" class="inp2_div_missa" id="inp2_div_missa" placeholder="Data">
+                    <input type="time" class="inp3_div_missa" id="inp3_div_missa" placeholder="Horário">
+                    <textarea name="" class="inp4_div_missa" id="inp4_div_missa" placeholder="Intenções" cols="50" rows="10"></textarea>
+                    
+
+                    <button class="adc_missa_intencoes" id="adc_missa_intencoes" onclick="adc_missa_intencoes()">Adicionar</button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Bloco voltado para a página de eventos-->
+        <div class="div_eventos" id="div_eventos"></div>
+
+
+        <!-- Bloco voltado para a página de calendário-->
+        <div class="div_calendario" id="div_calendario"></div>
+
+
+        <!-- Bloco voltado para a página de arquivos-->
+        <div class="div_arquivos" id="div_arquivos"></div>
+
+
+        <!-- Bloco voltado para a página de configurações-->
+        <div class="div_configuracoes" id="div_configuracoes">
+            <div class="b1_div_config">
+                <button class="bnt_desconectar" onclick="desconectar()">Sair</button>
+            </div>
+            <div class="b2_div_config"></div>
+        </div>
+
+    </body>
+</html>

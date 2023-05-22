@@ -1,0 +1,115 @@
+body{
+    background-color: #fff;
+}
+.divp{
+    width: 1650px;
+    height: 750px;
+    background-color: rgb(202, 109, 8);
+    border-radius: 15px;
+    box-shadow: 0px 10px 50px;
+    position: absolute;
+    margin: 20px 20px;
+}
+.divp h1{
+    position: absolute;
+    margin: 20px 350px;
+    color: #fff;
+}
+.div_menu{
+    width: 250px;
+    height: 750px;
+    background-color: rgb(202, 109, 8);
+    border-radius: 15px;
+    box-shadow: 10px 0px 15px;
+    position: absolute;
+}
+.bnt_foto{
+    width: 100px;
+    height: 100px;
+    background-image: url(sv_perfil.jfif);
+    background-size: 100px;
+    border-radius: 50px;
+    position: absolute;
+    margin: 10px 80px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.bnt_foto:hover{
+    width: 230px;
+    height: 200px;
+    background-image: url(sv_perfil.jfif);
+    background-size: 220px;
+    border-radius: 15px;
+    position: absolute;
+    margin: 10px 10px;
+}
+.div_menu h1{
+    position: absolute;
+    margin: 110px 40px;
+    color: #fff;
+}
+.bnt_usuario{
+    width: 180px;
+    height: 40px;
+    background-color: #fff;
+    color: black;
+    border-radius: 15px;
+    border-style: double;
+    cursor: pointer;
+    margin: 220px 40px;
+}
+.bnt_missas{
+    width: 180px;
+    height: 40px;
+    background-color: #fff;
+    color: black;
+    border-radius: 15px;
+    border-style: double;
+    cursor: pointer;
+    position:absolute;
+    margin: -200px 40px;
+}
+.bnt_intencoes{
+    width: 180px;
+    height: 40px;
+    background-color: #fff;
+    color: black;
+    border-radius: 15px;
+    border-style: double;
+    cursor: pointer;
+    position:absolute;
+    margin: -140px 40px;
+}
+.bnt_calendario{
+    width: 180px;
+    height: 40px;
+    background-color: #fff;
+    color: black;
+    border-radius: 15px;
+    border-style: double;
+    cursor: pointer;
+    position:absolute;
+    margin: -80px 40px;
+}
+.bnt_adceventos{
+    width: 180px;
+    height: 40px;
+    background-color: #fff;
+    color: black;
+    border-radius: 15px;
+    border-style: double;
+    cursor: pointer;
+    position:absolute;
+    margin: -20px 40px;
+}
+.bnt_sair{
+    position: absolute;
+    width: 180px;
+    height: 40px;
+    background-color: #fff;
+    color: black;
+    border-radius: 15px;
+    border-style: double;
+    cursor: pointer;
+    margin: 200px 40px;
+}

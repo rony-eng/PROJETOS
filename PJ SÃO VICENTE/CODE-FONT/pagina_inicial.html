@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="pagina_inicial.css">
+        <script src="pagina_inicial.js"></script>
+        <title>Página Inicial</title>
+    </head>
+    <body>
+        <div class="menu" id="menu">
+            <button class="divtb" onclick="foto_perfil()"></button>
+            <button class="divt1b" id="missas" onclick="missas()">Missas</button>
+            <button class="divt2b" id="intencoes" onclick="intencoes()">Intenções</button>
+            <button class="divt3b" onclick="calendario()">Calendário</button>
+            <button class="divt4b" onclick="">Adc Eventos</button>
+            <button class="divt5b" onclick="">Configurações</button>
+            <button class="sair" onclick="sair()">Sair</button>
+        </div>
+        <label class="sv_title">Comunidade São Vicente de Paulo</label>
+
+        <div class="div_intencoes" id="div_intencoes">
+            <label class="missa">Missa</label>
+            <input type="text" class="input_missa" id="input_missa">
+
+            <label class="data">Data</label>
+            <input type="date" class="input_data" id="input_data">
+
+            <div class="divisoria"></div>
+
+            <label class="intencoes">Intenções</label>
+            <textarea name="" id="input_intencoes" cols="50" rows="10"></textarea>
+            <button class="bnt_missa_adicionar" id="adicionar_intencoes" onclick="adicionar_intencoes()">Adicionar</button>
+            <button class="bnt_missa_fechar" onclick="fechar_intencoes()">Fechar</button>
+
+        </div>
+    </body>
+</html>

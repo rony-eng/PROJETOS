@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="login.css">
+        <script src="login.js"></script>
+        <title>Login</title>
+    </head>
+    <body>
+        <div class="divp">
+            <div class="b1">
+                <div class="b1_ft"></div>
+                <div class="tex_sv">
+                    <p>"O amor efetivo é o exercício das obras de caridade, 
+                        o serviço aos pobres assumido com alegria, coragem, 
+                        constância e amor” <br><br>(São Vicente de Paulo)</p>
+                </div>
+            </div>
+
+
+            <div class="b2">
+                <div class="ajuda_login">
+                    <h1>?</h1>
+                    <p>Para dúvidas, sugestões ou reclamações, entre em contato conosco clicando no circulo ao lado.</p>
+                    <button class="entre_contado"></button>
+                </div>
+
+                <h1 class="t_login">Bem Vindo</h1>
+                <p class="p_login">Para se conectadar conosco, por favor, faça o login com suas informações pessoais!</p>
+
+                <label for="" class="label_usuario"></label>
+                <img src="icone_usuario.png" class="icone_usuario" alt="">
+                <input type="text" placeholder="Insira seu email ou usuário" class="input_usuario" id="input_usuario">
+                <label for="" class="label_senha"></label>
+                <img src="icone_senha.png" class="icone_senha" alt="">
+                <input type="password" placeholder="Insira sua senha" class="input_senha" id="input_senha">
+                <button class="bnt_acessar" onclick="acessar()">Acessar</button>
+                <button class="bnt_cadastrar" onclick="cadastrar()">Cadastrar</button>
+
+
+                <div class="div_cadastrar" id="div_cadastrar">
+                    <h1 class="t_cadastro">Bem Vindo</h1>
+                    <p class="p_cadastro">Para se cadastrar, por favor, insira os dados abaixo, depois de confirmar, clique no botão de cadastrar.</p>
+                    <input type="text" placeholder="Usuário" class="inp_usuario">
+                    <img src="icone_usuario.png" class="icone_usuario_c" alt="">
+                    <input type="email" id="" placeholder="Email" class="inp_email">
+                    <img src="icone_e-mail.png" class="icone_email_c" alt="">
+                    <input type="text" placeholder="Senha" class="inp_senha">
+                    <img src="icone_senha.png" class="icone_senha_c" alt="">
+                    <input type="text" placeholder="Confirme sua senha" class="inp_csenha">
+                    <img src="icone_senha.png" class="icone_csenha_c" alt="">
+                    <button class="botão_p_cadastrar" id="botão_p_cadastrar" onclick="botão_p_cadastrar()">Cadastrar</button>
+                    <button class="botão_p_login" id="botão_p_login" onclick="botão_p_login()">Login</button>
+                </div>
+            </div>
+        </div> 
+    </body>
+</html>

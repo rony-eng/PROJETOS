@@ -1,0 +1,68 @@
+*{
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	font-family: "Arial";
+}
+body{
+	background-color: #263238;
+}
+.div-form{
+	width: 350px;
+	height: 300px;
+	position: relative;
+	left: 550px;
+	top: 150px;
+	border-radius: 20px;
+    box-shadow: 0 0 4em #000;
+}
+.div-form form{
+	align-items: center;
+	justify-content: center;
+}
+.login-usario{
+	position: relative;
+}
+.div-form label{
+	color: rgb(150, 150, 150);
+	font-size: 16px;
+	position: relative;
+	top: -5px;
+	left: 33px;
+	cursor: text;
+	transition: 0.5s ease-in-out;
+}
+.div-form .input{
+	width: 80%;
+	margin: 20px 30px;
+	background-color: #263238;
+	padding: 5px;
+	position: relative;
+	top: 60px;
+	border: 0;
+	border-bottom: 2px solid rgb(150, 150, 150);
+	outline: 0;
+	
+}
+.div-form .input:focus,
+.div-form .input:valid{
+	border-bottom: 2px solid cornflowerblue; 
+}
+.div-form .input:focus ~ label,
+.div-form .input:valid ~ label{
+	transform: translateY(-24px);
+	font-size: 13px;
+	color: cornflowerblue;
+}
+.div-form .div-botton button{
+	width: 125px;
+	height: 40px;
+	position: relative;
+	left: 105px;
+	top: 60px;
+	border-radius: 10px;
+	border: 0;
+	font-size: 15px;
+	opacity: 0.5;
+	cursor: pointer;
+}

@@ -1,0 +1,51 @@
+body{
+	background-color: #263238;
+}
+body p{
+	color: #fff;
+	background-color: green;
+}
+div {
+	display: inline-block;
+	margin: 0 5px;
+}
+.div-esq{
+	width: 200px;
+	height: 580px;
+	background-color: #263238;
+	position: absolute;
+	left: 70px;
+	top: 30px;
+	border-radius: 20px;
+    box-shadow: 0 0 4em #000;
+}
+.div-esq h4{
+	color: #fff;
+	position: absolute;
+	left: 50px;
+    box-shadow: 0 0 4em #000;
+}
+.div-esq p{
+	width: 200px;
+	position: absolute;
+	bottom: 0;
+}
+.div-dir{
+	width: 1000px;
+	height: 580px;
+	background-color: #263238;
+	position: relative;
+	left: 280px;
+	top: 22px;
+	border-radius: 20px;
+    box-shadow: 0 0 4em #000;
+}
+.div-dir button{
+	background-color: blue;
+	color: #fff;
+	width: 100px;
+	height: 100px;
+	border-radius: 20px;
+	border: 0;
+	cursor: pointer;
+}
