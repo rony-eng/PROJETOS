@@ -173,10 +173,7 @@ function bnt_calendario(){
         div_missa.style.display = 'none';
     }
 }
-let el = document.querySelector('.number-days')
-for(i = 1; i <= 31; i++){
-    el.innerHTML+='<span>'+i+'</span>';
-}
+
 
 // aqui fica voltado para a página de arquivos
 function bnt_arquivos(){
@@ -223,24 +220,24 @@ function bnt_configuracoes(){
 
     if(container.style.display === 'none'){
         container.style.display = 'flex';
-        divp.style.display = 'none';
-        div_historia_sv.style.display = 'none';
-        div_perfil.style.display = 'none';
-        div_eventos.style.display = 'none';
-        div_calendário.style.display = 'none';
-        div_arquivos.style.display = 'none';
-        div_missa.style.display = 'none';
     }else{
         container.style.display = 'none';
-        divp.style.display = 'flex';
-        div_historia_sv.style.display = 'none';
-        div_perfil.style.display = 'none';
-        div_eventos.style.display = 'none';
-        div_calendário.style.display = 'none';
-        div_arquivos.style.display = 'none';
-        div_missa.style.display = 'none';
     }
 }
+function focado(){
+    document.getElementsByClassName('dropDown')[0].style.display="block"
+}
+function desfoque(){
+    document.getElementsByClassName('dropDown')[0].style.display="none"
+}
+function category(c){
+    var item = document.getElementById('item-'+c).innerHTML
+    document.getElementsByClassName('modo_config')[0].value = item
+}
+function aplicar_modo(){
+    const bnt_modo = document.querySelector('.modo_noturno_claro')    
+}
+
 function desconectar(){
     alert('Você saiu da sua conta!')
     location.href = 'treinando_login.html'

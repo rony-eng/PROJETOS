@@ -179,7 +179,7 @@ nav{
     width: 1300px;
     height: 615px;
     margin-left: 60px;
-    display: none; /* display flex*/
+    display: flex; /* display flex*/
     justify-content: center;
     align-items: stretch;
     flex-wrap: wrap;
@@ -528,7 +528,7 @@ textarea::-webkit-scrollbar-thumb {
     width: 1300px;
     height: 629px;
     margin-left: 60px;
-    display: flex; /* display none*/
+    display: none; /* display none*/
     justify-content: center;
     align-items: stretch;
     flex-wrap: wrap;
@@ -536,7 +536,6 @@ textarea::-webkit-scrollbar-thumb {
 .div_interable_calendario{
     width: 630px;
     height: 629px;
-    background-color: aqua;
 }
 .wraper{
     width: 590px;
@@ -597,47 +596,101 @@ textarea::-webkit-scrollbar-thumb {
 
 /* estilo da página de configurações*/
 .div_configuracoes{
-    width: 1300px;
-    height: 629px;
+    position: fixed;
+    width: 320px;
+    height: 610px;
+    margin-top: 10px;
     margin-left: 60px;
     display: none; /* display none*/
     justify-content: center;
     align-items: stretch;
     flex-wrap: wrap;
     gap: 15px;
-
-}
-.b1_div_config{
-    width: 350px;
-    border-radius: 15px;
+    background-color: white;
     box-shadow: 10px 10px 25px;
+    border-radius: 15px;
+}
+/*
+.modo_config::placeholder{
+    color: white;
+}
+.modo_config{
+    margin-top: 10px;
+    margin-left: 0px;
+    width: 200px;
+    height: 30px;
+    background-color: #321f01;
+    color: white;
+    border-radius: 5px;
+    outline: none;
+}
+.dropDown{
+    margin-top: -275px;
+    margin-left: -68px;
+    width: 210px;
+    height: 60px;
+    background-color: #321f01;
+    border-radius: 5px;
+    color: white;
+    display: none;
+    transform: translate(0px, -10px);
+}
+.item{
+    height: 30px;
+    padding: 0px 5px;
+    box-sizing: border-box;
+    transition: .3s;
+    cursor: pointer;
+}
+.item:hover{
+    background-color: #3c2501;
+    padding-left: 7px;
+    transition: .3s;
+    border-radius: 5px;
+}*/
+.modo_noturno_claro{
+    margin-top: 560px;
+    margin-left: 170px;
+    width: 70px;
+    height: 35px;
+    border: 5px solid #000;
+    border-radius: 25px;
+    position: relative;
+    cursor: pointer;
+}
+.modo_noturno_claro:before{
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: black;
+    border-radius: 50%;
+    margin-top: -10px;
+    margin-left: -25px;
 }
 .bnt_desconectar{
-    width: 100px;
-    height: 30px;
-    border-radius: 15px;
+    position: fixed;
+    width: 150px;
+    height: 35px;
+    border-radius: 10px;
     border-style: double;
     border-color: #321f01;
     color: white;
     background-color: #321f01;
-    margin-top: 550px;
-    margin-left: 125px;
+    margin-top: 560px;
+    margin-left: -100px;
     transition: all 0.3s;
     cursor: pointer;
 }
 .bnt_desconectar:hover{
-    width: 100px;
-    height: 30px;
-    border-radius: 15px;
+    width: 150px;
+    height: 35px;
+    border-radius: 10px;
     border-style: double;
     border-color: #321f01;
     color: #321f01;
     background-color: white;
-    margin-top: 550px;
-    margin-left: 125px;
+    margin-top: 560px;
+    margin-left: -100px;
     cursor: pointer;
-}
-.b2_div_config{
-    width: 900px;
-    background-color: blueviolet;
 }
