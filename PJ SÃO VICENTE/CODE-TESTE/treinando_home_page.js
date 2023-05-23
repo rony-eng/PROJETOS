@@ -263,7 +263,25 @@ function category(c){
     document.getElementsByClassName('modo_config')[0].value = item
 }
 function aplicar_modo(){
-    const bnt_modo = document.querySelector('.modo_noturno_claro')    
+    var container = document.querySelector('body')
+    var title1 = document.getElementById('title_sv1')
+    var title2 = document.getElementById('title_sv2')
+    var subtitle = document.getElementById('p_hp')
+    var div_hsv = document.getElementById('historia_sv')
+    var title_hsv = document.getElementById('title_historia_sv')
+
+    if (container.style.backgroundColor != 'white'){
+        container.style.backgroundColor = '#321f01'
+        title1.style.color = 'white'
+        title2.style.color = 'white'
+        subtitle.style.color = 'white'
+        div_hsv.style.color = 'white'
+        title_hsv.style.color = 'white' 
+        alert('Função funcionando!')
+    }else{
+        container.style.backgroundColor = 'rgba(210, 117, 5, 0.875)'
+        alert('Função não funciona')
+    }
 }
 
 function desconectar(){

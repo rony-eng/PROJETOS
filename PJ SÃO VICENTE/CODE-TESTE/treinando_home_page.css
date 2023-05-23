@@ -601,7 +601,7 @@ textarea::-webkit-scrollbar-thumb {
     height: 610px;
     margin-top: 10px;
     margin-left: 60px;
-    display: none; /* display none*/
+    display: flex; /* display none*/
     justify-content: center;
     align-items: stretch;
     flex-wrap: wrap;
@@ -651,22 +651,12 @@ textarea::-webkit-scrollbar-thumb {
 .modo_noturno_claro{
     margin-top: 560px;
     margin-left: 170px;
-    width: 70px;
+    width: 100px;
     height: 35px;
     border: 5px solid #000;
     border-radius: 25px;
     position: relative;
     cursor: pointer;
-}
-.modo_noturno_claro:before{
-    content: '';
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background: black;
-    border-radius: 50%;
-    margin-top: -10px;
-    margin-left: -25px;
 }
 .bnt_desconectar{
     position: fixed;
