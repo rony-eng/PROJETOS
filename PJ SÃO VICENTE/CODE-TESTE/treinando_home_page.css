@@ -1,3 +1,20 @@
+/* variaveis css*/
+:root{
+    --body-bg:rgba(210, 117, 5, 0.875);
+    --nav-bg: white;
+    --title-color:#321f01;
+    --p-color:black;
+    --subtitle-color:#fab442;
+}
+.dark_modo:root{
+    --body-bg:#321f01;
+    --nav-bg:rgba(210, 117, 5, 0.875);
+    --title-color: white;
+    --p-color:white;
+    --subtitle-color:#fab442;
+}
+
+
 body{
     margin: 10px;
     display: flex;
@@ -5,7 +22,7 @@ body{
     justify-content: start;
     flex-wrap: wrap;
     gap: 10px;
-    background-color: rgba(210, 117, 5, 0.875);
+    background-color: var(--body-bg);
     /* a cor da imagem é #D75808 */
 }
 
@@ -13,7 +30,7 @@ body{
 nav{
     width: 50px;
     height: 610px;
-    background-color: white;
+    background-color: var(--nav-bg);
     position: fixed;
     margin-top: 10px;
     margin-left: -10px;
@@ -203,7 +220,7 @@ nav{
 .title_sv1{
     font-size: 75px;
     margin-top: 110px;
-    color: #321f01;
+    color: var(--title-color);
 }
 .title_sv2{
     font-size: 80px;
@@ -216,7 +233,7 @@ nav{
     font-family: Arial, Helvetica, sans-serif;
     text-align: justify;
     margin-top: -50px;
-    color: black;
+    color: var(--p-color);
 }
 .bnt_historia_sv{
     width: 80px;
@@ -267,17 +284,17 @@ nav{
     font-size: 75px;
     margin-top: 20px;
     margin-left: 0px;
-    color: #321f01;
+    color: var(--title-color);
 }
 .title_historia_sv h1{
     font-size: 70px;
     margin-top: 150px;
 }
 .texto_historia_sv h2{
-    color: #fab442;
+    color: var(--subtitle-color);
 }
 .texto_historia_sv{
-    color: black;
+    color: var(--p-color);
     width: 950px;
     padding: 20px;
 }
@@ -347,37 +364,37 @@ nav{
 .b2_div_perfil h1{
     font-size: 55px;
     margin-top: 80px;
-    color: #321f01;
+    color: var(--title-color);
 }
 .b2_div_perfil h2{
     margin-top: 10px;
-    color: #fab442;
+    color: var(--subtitle-color);
 }
 .b2_div_perfil p{
     margin-top: -20px;
     width: 500px;
-    color: #321f01;
+    color: var(--p-color);
 }
 .nome_div_perfil{
     width: 100px;
     margin-top: -20;
     font-size: 20px;
-    color: #fab442;
+    color: var(--subtitle-color);
 }
 .email_div_perfil{
     width: 100px;
     font-size: 20px;
-    color: #fab442;
+    color: var(--subtitle-color);
 }
 .idade_div_perfil{
     width: 100px;
     font-size: 20px;
-    color: #fab442;
+    color: var(--subtitle-color);
 }
 .usuario_div_perfil{
     width: 100px;
     font-size: 20px;
-    color: #fab442;
+    color: var(--subtitle-color);
 }
 
 
@@ -404,20 +421,20 @@ nav{
 .capela_texto_div_missa{
     padding-top: 80px;
     font-size: 80px;
-    color: #321f01;
+    color: var(--title-color);
 }
 .sv_texto_div_missa{
     margin-top: -70px;
     font-size: 80px;
-    color: #321f01;
+    color: var(--title-color);
 }
 .subtitle_texto_div_missa{
     margin-top: -55px;
-    color: #fab442;
+    color: var(--subtitle-color);
 }
 .p_texto_div_missa{
     margin-top: -20px;
-    color: #321f01;
+    color: var(--p-color);
 }
 .b2_div_missa{
     width: 500px;
@@ -601,12 +618,12 @@ textarea::-webkit-scrollbar-thumb {
     height: 610px;
     margin-top: 10px;
     margin-left: 60px;
-    display: flex; /* display none*/
+    display: none; /* display none*/
     justify-content: center;
     align-items: stretch;
     flex-wrap: wrap;
     gap: 15px;
-    background-color: white;
+    background-color: var(--nav-bg);
     box-shadow: 10px 10px 25px;
     border-radius: 15px;
 }
