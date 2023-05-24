@@ -252,23 +252,22 @@ function bnt_configuracoes(){
         container.style.display = 'none';
     }
 }
-function focado(){
-    document.getElementsByClassName('dropDown')[0].style.display="block"
-}
-function desfoque(){
-    document.getElementsByClassName('dropDown')[0].style.display="none"
-}
 function category(c){
     var item = document.getElementById('item-'+c).innerHTML
     document.getElementsByClassName('modo_config')[0].value = item
 }
 function aplicar_modo(){
     var container = document.querySelector('html')
+    var div_config = document.querySelector('.div_configuracoes');
 
     if(container.className === 'light_modo'){
         container.className = 'dark_modo'
+        div_config.style.display = 'none'
+        alert('Modo noturno ativado!')
     }else{
         container.className = 'light_modo'
+        div_config.style.display = 'none'
+        alert('Modo claro ativado!')
     }
 }
 

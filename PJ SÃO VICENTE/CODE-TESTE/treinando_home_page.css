@@ -17,6 +17,7 @@
 
 body{
     margin: 10px;
+    margin-bottom: 0px;
     display: flex;
     flex-direction: row;
     justify-content: start;
@@ -100,9 +101,9 @@ nav{
     border-style: none;
     margin: 255px 5px;
     background-color: white;
-    color: rgba(210, 117, 5, 0.875);
+    color: #321f01;
     border-style: double;
-    border-color: rgba(210, 117, 5, 0.875);
+    border-color: #321f01;
     font-size: 15px;
     cursor: pointer;
 }
@@ -128,9 +129,9 @@ nav{
     border-style: none;
     margin: 305px 5px;
     background-color: white;
-    color: rgba(210, 117, 5, 0.875);
+    color: #321f01;
     border-style: double;
-    border-color: rgba(210, 117, 5, 0.875);
+    border-color: #321f01;
     font-size: 15px;
     cursor: pointer;
 }
@@ -156,9 +157,9 @@ nav{
     border-style: none;
     margin: 355px 5px;
     background-color: white;
-    color: rgba(210, 117, 5, 0.875);
+    color: #321f01;
     border-style: double;
-    border-color: rgba(210, 117, 5, 0.875);
+    border-color: #321f01;
     font-size: 15px;
     cursor: pointer;
 }
@@ -184,9 +185,9 @@ nav{
     border-style: none;
     margin: 550px 5px;
     background-color: white;
-    color: rgba(210, 117, 5, 0.875);
+    color: #321f01;
     border-style: double;
-    border-color: rgba(210, 117, 5, 0.875);
+    border-color: #321f01;
     font-size: 15px;
     cursor: pointer;
 }
@@ -196,7 +197,7 @@ nav{
     width: 1300px;
     height: 615px;
     margin-left: 60px;
-    display: flex; /* display flex*/
+    display: none; /* display flex*/
     justify-content: center;
     align-items: stretch;
     flex-wrap: wrap;
@@ -226,7 +227,7 @@ nav{
     font-size: 80px;
     margin-left: 385px;
     margin-top: -80px;
-    color: #321f01;
+    color: var(--title-color);
 }
 .text_hp p{
     font-size: 13px;
@@ -262,14 +263,19 @@ nav{
 
 /* estilo para página da história de são vicente */
 .historia_sv{
-    width: 1300px;
-    height: 615px;
-    margin-left: 60px;
-    display: none; /* vai ficar display none, para a hora de mudar */
+    width: 1000px;
+    height: 100%;
+    margin-top: 50px;
+    margin-left: 200px;
+    margin-bottom: 0px;
+    display: flex; /* vai ficar display none, para a hora de mudar */
     justify-content: center;
     align-items: stretch;
     flex-wrap: wrap;
     gap: 20px;
+    background-color: rgba(173, 97, 4, 0.875);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 .img_historia_sv{
     width: 200px;
@@ -277,12 +283,12 @@ nav{
     background-image: url(sv_perfil.png);
     background-size: 200px;
     border-radius: 200px;
-    margin-top: 110px;
+    margin-top: 10px;
     box-shadow: 10px 10px 25px;
 }
 .title_historia_sv{
     font-size: 75px;
-    margin-top: 20px;
+    margin-top: -70px;
     margin-left: 0px;
     color: var(--title-color);
 }
@@ -672,8 +678,10 @@ textarea::-webkit-scrollbar-thumb {
     height: 35px;
     border: 5px solid #000;
     border-radius: 25px;
+    color: var(--p-color);
     position: relative;
     cursor: pointer;
+    background-color: var(--nav-bg);
 }
 .bnt_desconectar{
     position: fixed;
@@ -696,7 +704,7 @@ textarea::-webkit-scrollbar-thumb {
     border-style: double;
     border-color: #321f01;
     color: #321f01;
-    background-color: white;
+    background-color: var(--nav-bg);
     margin-top: 560px;
     margin-left: -100px;
     cursor: pointer;
