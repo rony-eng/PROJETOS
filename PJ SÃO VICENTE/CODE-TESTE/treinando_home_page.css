@@ -197,7 +197,7 @@ nav{
     width: 1300px;
     height: 615px;
     margin-left: 60px;
-    display: none; /* display flex*/
+    display: flex; /* display flex*/
     justify-content: center;
     align-items: stretch;
     flex-wrap: wrap;
@@ -268,7 +268,7 @@ nav{
     margin-top: 50px;
     margin-left: 200px;
     margin-bottom: 0px;
-    display: flex; /* vai ficar display none, para a hora de mudar */
+    display: none; /* vai ficar display none, para a hora de mudar */
     justify-content: center;
     align-items: stretch;
     flex-wrap: wrap;
@@ -519,7 +519,7 @@ textarea::-webkit-scrollbar-thumb {
 }
 .adc_missa_intencoes{
     margin-top: 10px;
-    margin-left: 200px;
+    margin-left: 130px;
     width: 100px;
     height: 30px;
     font-size: 15px;
@@ -529,6 +529,44 @@ textarea::-webkit-scrollbar-thumb {
     color: #fab442;
     border-radius: 10px;
     cursor: pointer;
+}
+.ver_missa_intencoes{
+    margin-top: 10px;
+    margin-left: 0px;
+    width: 150px;
+    height: 30px;
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #321f01;
+    box-shadow: 10px 10px 25px;
+    color: #fab442;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.div_ver_inf_missa{
+    position: absolute;
+    width: 320px;
+    height: 610px;
+    margin-top: 10px;
+    margin-left: -960px;
+    display: none; /* display none*/
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: wrap;
+    gap: 15px;
+    background-color: var(--nav-bg);
+    box-shadow: 10px 10px 25px;
+    border-radius: 15px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    box-sizing: border-box;
+}
+.receber_inf_missa{
+    width: 300px;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 15px;
+    text-align: start;
 }
 
 

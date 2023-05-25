@@ -115,7 +115,9 @@ function adc_missa_intencoes()
     var input_data = document.getElementById('inp2_div_missa').value;
     var input_hora = document.getElementById('inp3_div_missa').value;
     var input_intencoes = document.getElementById('inp4_div_missa').value;
+    var recebe = document.querySelector('.receber_inf_missa')
 
+    recebe.value = 'Missa:' + '\n' + input_missa + '\n' + '\n'  + 'Data:' + '\n' + input_data + '\n' + '\n' + 'Hora' + '\n' + input_hora + '\n' + '\n' + 'Intenções:' + '\n' + input_intencoes
 
     if(input_missa && input_data && input_hora && input_intencoes != '')
     {
@@ -137,6 +139,15 @@ function adc_missa_intencoes()
         alert('Campos faltam serem preenchidos!')
     }
 }  
+function ver_missa_intencoes(){
+    var container = document.querySelector('.div_ver_inf_missa');
+
+    if(container.style.display === 'none'){
+        container.style.display = 'flex';
+    }else{
+        container.style.display = 'none';
+    }
+}
 
 // aqui fica voltado para a página de eventos
 function bnt_eventos(){
@@ -270,7 +281,6 @@ function aplicar_modo(){
         alert('Modo claro ativado!')
     }
 }
-
 function desconectar(){
     alert('Você saiu da sua conta!')
     location.href = 'treinando_login.html'

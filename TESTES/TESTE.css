@@ -1,0 +1,32 @@
+:root{
+    --bg-color: white;
+}
+.dark_modo:root{
+    --bg-color: #123;
+}
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    background-color: var(--bg-color);
+}
+.mudar_modo{
+    position: absolute;
+    margin-top: 100px;
+}
+.inp_t1{
+    position: absolute;
+    margin-top: 200px;
+    width: 270px;
+    height: 50px;
+}
+.env_tex_inp{
+    position: absolute;
+    margin-top: 285px;
+}
+textarea{
+    position: absolute;
+    margin-top: 500px;
+    margin-left: 0px;
+}
