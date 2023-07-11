@@ -187,7 +187,6 @@ function bnt_calendario(){
     }
 }
 
-
 // aqui fica voltado para a página de arquivos
 function bnt_arquivos(){
     var container = document.querySelector('.div_arquivos')
