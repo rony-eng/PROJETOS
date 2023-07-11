@@ -341,7 +341,7 @@ nav{
     height: 610px;
     margin-top: 10px;
     margin-left: 60px;
-    display: flex; /* display none*/
+    display: none; /* display none*/
     justify-content: start;
     align-items: stretch;
     flex-wrap: wrap;

@@ -1,39 +1,372 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" class="light_modo">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="pagina_inicial.css">
         <script src="pagina_inicial.js"></script>
-        <title>Página Inicial</title>
+        <title>Home Page</title>
     </head>
     <body>
-        <div class="menu" id="menu">
-            <button class="divtb" onclick="foto_perfil()"></button>
-            <button class="divt1b" id="missas" onclick="missas()">Missas</button>
-            <button class="divt2b" id="intencoes" onclick="intencoes()">Intenções</button>
-            <button class="divt3b" onclick="calendario()">Calendário</button>
-            <button class="divt4b" onclick="">Adc Eventos</button>
-            <button class="divt5b" onclick="">Configurações</button>
-            <button class="sair" onclick="sair()">Sair</button>
+        <!-- Bloco voltado para o menu-->
+        <nav class="menu">
+            <button class="bnt_perfil" onclick="bnt_perfil()"></button>
+            <button class="bnt_missa" onclick="bnt_missa()">M</button>
+            <button class="bnt_eventos" onclick="bnt_eventos()">E</button>
+            <button class="bnt_calendario" onclick="bnt_calendario()">C</button>
+            <button class="bnt_arquivos" onclick="bnt_arquivos()">A</button>
+            <button class="bnt_configuracoes" onclick="bnt_configuracoes()">C</button>
+        </nav>
+
+
+        <!-- Bloco voltado para a página inicial -->
+        <div class="div_hp" id="div_hp">
+            <div class="img_hp"></div>
+            <div class="text_hp">
+                <h1 class="title_sv1" id="title_sv1">São Vicente</h1>
+                <h1 class="title_sv2" id="title_sv2">de Paulo</h1>
+                <p id="p_hp">Vicente de Paulo (1581-1660), viveu numa época dificil e confusa da França, cuja população oscilava entre 17 e 20 milhões de habitantes.
+                    O povo passava por tremendas dificuldades, atormentado por uma mortalidade infantil de 50%, a média de idade não passava de 25 anos e o
+                    analfabetismo beirava os 90%.
+                    Este quadro resultava das constantes guerras religiosas, da grande 'Guerra dos Trinta Anos' (1618-1648) e de inúmeros pequenos conflitos
+                    internos que destruíram o país, tanto nas grandes cidades, como no campo, onde a produção agrícola era dizimada, fazendo com que o povo fosse
+                    mal alimentado e muito maltratado.
+                    As duas classes dominantes viviam momentos opostos. A nobreza empobrecia pouco a pouco, entre outras razões, por causa das guerras e lutas
+                    internas.<br><br> Enquanto isso, o clero católico, dono de dois terços do território nacional, se fortalecia cada vez mais, reunindo 123 bispados
+                    e 15 arcebispados com suas 152.000 igrejas ou capelas e 40.000 conventos e algo em torno de 266.000 eclesiásticos, 188.000 religiosos.
+                    O lamentável estado no qual o país se encontrava e a própria maneira da Igreja ser, formavam terra fértil para o enfraquecimento moral da vida
+                    das pessoas e de promiscuidade em geral. Situação esta também favorável ao crescimento do protestantismo e do ateísmo.
+                </p>
+                <button class="bnt_historia_sv" onclick="bnt_historia_sv()">Leia mais</button>
+            </div>
         </div>
-        <label class="sv_title">Comunidade São Vicente de Paulo</label>
 
-        <div class="div_intencoes" id="div_intencoes">
-            <label class="missa">Missa</label>
-            <input type="text" class="input_missa" id="input_missa">
 
-            <label class="data">Data</label>
-            <input type="date" class="input_data" id="input_data">
+        <!-- Bloco voltado para a página da história de são vicente-->
+        <div class="historia_sv" id="historia_sv">
+            <div class="img_historia_sv"></div>
+            <div class="title_historia_sv">
+                <h1 id="title_historia_sv">São Vicente de Paulo</h1>
+            </div>
+            <div class="texto_historia_sv">
+                <p>Vicente de Paulo (1581-1660), viveu numa época dificil e confusa da França, cuja população oscilava entre 17 e 20 milhões de habitantes.
+                    O povo passava por tremendas dificuldades, atormentado por uma mortalidade infantil de 50%, a média de idade não passava de 25 anos e o
+                    analfabetismo beirava os 90%.
+                    Este quadro resultava das constantes guerras religiosas, da grande 'Guerra dos Trinta Anos' (1618-1648) e de inúmeros pequenos conflitos
+                    internos que destruíram o país, tanto nas grandes cidades, como no campo, onde a produção agrícola era dizimada, fazendo com que o povo fosse
+                    mal alimentado e muito maltratado.
+                    As duas classes dominantes viviam momentos opostos. A nobreza empobrecia pouco a pouco, entre outras razões, por causa das guerras e lutas
+                    internas.<br><br> Enquanto isso, o clero católico, dono de dois terços do território nacional, se fortalecia cada vez mais, reunindo 123 bispados
+                    e 15 arcebispados com suas 152.000 igrejas ou capelas e 40.000 conventos e algo em torno de 266.000 eclesiásticos, 188.000 religiosos.
+                    O lamentável estado no qual o país se encontrava e a própria maneira da Igreja ser, formavam terra fértil para o enfraquecimento moral da vida
+                    das pessoas e de promiscuidade em geral. Situação esta também favorável ao crescimento do protestantismo e do ateísmo.
+                </p>
+                
+                <h2>Nesta realidade encontramos o jovem Vicent de Paul</h2>
+                <p>
+                    Vicente nasceu em 1581 em Pouy, como terceiro filho de uma família pobre, de camponeses. Fez seus estudos básicos entre 1595 e 1597.
+                    Cursou Teologia em Tolosa, entre 1597 e 1604, e se ordenou sacerdote já em 1600. Em 1610, se transferiu para Paris, assumindo a tarefa de capelão
+                    da Rainha Margarida de Valois. Em 1612, foi nomeado vigário de Clichy e em 1613, preceptor na família nobre dos de Gondi.
+                </p>
+                <p>
+                    Os anos de 1617 a 1619, tornaram-se o palco da grande guinada na vida de Vicente de Paulo, já com 36 anos de idade. Em 1617, ele se impressionou com a 
+                    confissão de um pobre agricultor em Gannes, que havia esperado longos anos para poder fazer sua confissão geral. Esta experiência levou padre Vicente a fazer 
+                    o seu famoso sermão de Folleville em 25 de janeiro daquele mesmo ano, exortando as pessoas à confissão geral. A partir de então, Vicente começava a dirigir 
+                    os seus trabalhos em favor dos pobres na França, especialmente os do campo. O que logo em seguida seria a ideia fundacional da congregação tornara-se, pouco a 
+                    pouco, realidade: "Os pobres são nossos mestres e senhores". Ele deixou a família de Gondi, embora temporariamente. Na cidade de Chatillons-des-Dombes, em contato 
+                    com pessoas pobres e doentes, proferiu o sermão da caridade, dando origem às Damas da Caridade e escrevendo o primeiro regulamento para elas.
+                </p>
+                <p>
+                    No ano de 1618, Padre Vicente pregou as primeiras missões em Villepreux, Joigny e Montmirail, e, em seguida, se encontrou por diversas vezes com francisco de Sales 
+                    (1567-1622), nome de destaque na reforma católica após o Concílio de Trento (1545-1563). Este se tornou seu diretor espiritual. No ano seguinte, encontramos Padre 
+                    Vicente como capelão-geral das galeras e entre os anos de 1620 e 1625, pregando missões em diversas localidades da França.
+                </p>
+                <p>
+                    Em 17 de abril de 1625, assinou o contrato da fundação da Congregação da Missão (Lazarista). A Congregação da Missão foi aprovada em 24 de abril de 1626, pelo 
+                    arcebispo de Paris e os primeiros missionários assinaram a ata de sua associação. Roma recusou, por duas vezes, a aprovação da nova congregação, entre outros motivos, 
+                    por influência do Cardeal Bérulle.
+                </p>
+                <p>
+                    Em 1632, o priorado de 'São Lazaro' em Paris tornou-se propriedade da congregação, dando origem ao nome de 'Lazarista'. No ano seguinte Padre Vicente deu início às conferências 
+                    eclesiásticas das "Terçsd-Feiras": reuniões da associação sacerdotal em São Lázaro, Paris, para rezar, trabalhar, refletir e edificar-se.
+                </p>
+                <p>
+                    Importante na vida de Vicente foi ele ter conhecido a viúva Luísa de Marillac, por volta de 1622.
+                </p>
+                <p>
+                    A decisão de dedicar sua vida ao serviço dos Pobres foi tomada em 1629. A partir de então, Vicente e Luísa formaram uma dupla imbatível no serviço aos irmãos e irmãs carentes 
+                    de sua época, e, por extensão, de todas as épocas. […]. No dia 29 de novembro de 1633, reuniu-se um grupo de moças na casa da própria Luísa, para que fossem formadas na assistência 
+                    básica aos doentes em suas residências. Nascia, assim, a Companhia das Filhas da Caridade.
+                </p>
+                <p>
+                    Em 1642, aconteceu a primeira Assembleia Geral da Congregação da Missão. No ano seguinte, Padre Vicente assistiu Luís XIII nos seus últimos momentos e foi nomeado membro do Conselho de Consciência da Regência.
+                </p>
+                <p>
+                    A partir de 1645, iniciaram-se as missões fora da França: Tunísia (1645), Irlanda, Escócia e Argel (1646) e Madagascar (1648). Em 1649, Padre Vicente fez mais uma tentativa de interferir em favor da paz, 
+                    desta vez junto à Rainha Ana da Áustria, porém, não obteve sucesso. O ano de 1651 foi marcado pela segunda Assembleia Geral da COngregação da Missão e a fundação definitiva da mesma na Polônia.
+                </p>
+                <p>
+                    Padre Vicente, em 1658, já com sérios problemas de saúde, distribuiu e explicou as Regras da Congregação da Missão aos seus membros. Em 15 de março de 1660 faleceu Luísa de Marillac, cofundadora da Companhia 
+                    das Filhas da Caridade. Em 27 de setembro, do mesmo ano, o Senhor da Messe chamou o seu servo, Vicente de Paulo, para junto de si.
+                </p>
+                <p>
+                    Vicente de Paulo foi canonizado em 1737, e tornou-se conhecido como São Vicente de Paulo, declarado patrono de todas as obras da caridade em 1885.
+                </p>
+                <h2>A Congregação da Missão</h2>
+                <p>
+                    Vicente de Paulo descobriu. com efeito, a necessidade de envangelizar os pobres enquanto exercia seu ministério em Gannes e, em 25 de janeiro de 1617, em Folleville. E este foi, conforme seu próprio testemunho,
+                     a origem, tanto de sua própria vocação, como da Congregação da Missão. Consequentemente, estudiosos vicentinos consideram 25 de janeiro de 1617, a data da fundação da Congregação da Missão, lembrando que a assinatura 
+                     do contrato entre Madame de Gondy e Vicente aconteceu no dia 17 de abril de 1625. Como a primeira casa da Congregação se chamava “São Lázaro”, os padres eram chamados de Lazaristas. Em muitos países, porém, levam o nome de Padres Vicentinos.
+                </p>
+                <p>
+                    O seu carisma se entende através de três prioridades, intimamente interligadas. São Vicente colocou os pobres em primeiro lugar, a quem chamava de “Nossos amos”. A fim de servi-los melhor, ele optou pelas Missões 
+                    como meio mais eficaz para aproximar-se deles. E o fundador valorizava a formação de clero, a fim de preparar novos padres qualificados para as missões.
+                </p>
+                <p>
+                    Lemos as palavras de Vicente: 
 
-            <div class="divisoria"></div>
-
-            <label class="intencoes">Intenções</label>
-            <textarea name="" id="input_intencoes" cols="50" rows="10"></textarea>
-            <button class="bnt_missa_adicionar" id="adicionar_intencoes" onclick="adicionar_intencoes()">Adicionar</button>
-            <button class="bnt_missa_fechar" onclick="fechar_intencoes()">Fechar</button>
-
+Ora, trabalhar pela salvação da pobre gente dos campos é o fundamental. Tudo o mais é acessório. Jamais teríamos trabalhado na obra dos ordinandos, na dos seminários de eclesiásticos, se não tivéssemos julgado que isto seria necessário 
+para que o povo conservasse o fruto decorrente das missões quando há bons eclesiásticos.
+                </p>
+                <p>
+                    No começo do século XXI, a Congregação se encontrava em todos os continentes, tendo seus 3.325 membros presentes em sessenta e seis países.
+                </p>
+                <p>
+                    O Superior Geral é Padre George G. Gay, eleito em 2004, que reside em Roma com os outros membros que formam a Cúria Geral.
+                </p>
+                <p>
+                    A Congregação é, estruturalmente, subdividida em Províncias. Deste modo encontramos no Brasil três Províncias: Província Brasileira da Congregação da Missão (PBCM), com sede no Rio de Janeiro, fundada em 1845, e, em 2008, 
+                    com 63 padres; Congregação da Missão Província do Sul (CMPS), com sede em Curitiba, fundada em 1969, e, em 2008, com 68 padres, e a Província de Fortaleza da Congregação da Missão (PFCM), fundada em 1967, e em 2008, com 42 padres.
+                </p>
+                <p>
+                    O atual visitador provincial da PFCM é Padre Evaldo Carvalho dos Santos, eleito em 2010. O provincialato se situa à Rua São Vicente de Paulo, 300, Antonio Bezerra CEP - 60352-060. Fortaleza (CE)
+                </p>
+                <h2>Introdução</h2>
+                <p>
+                    A história dos padres da Congregação da Missão da Província de Fortaleza já foi objeto de estudo e pesquisa em tempos passados. Encontramos algumas páginas com anotações de Padre Francisco Janssen, 
+                    quando era vice-visitador (1953-1956), assim como um longo e belo relato a respeito das missões, escrito por Padre Pedro Vermeulen na década de 1960. Mais recentemente, Padre Pedro van Erk anotou, 
+                    em mais de cem páginas, lembranças pessoais e dados a respeito dos trabalhos nas missões, nos seminários e paróquias. E, enfim, Padre Frederico Knibbeler, além de ter preparado três cadernos sobre 
+                    as atividades missionárias, deixou-nos valioso livro sob o título Padre Guilherme Vaessen c.m e a Vice-Província de Fortaleza da Congregação da Missão. Nele, encontramos o caminho percorrido por 
+                    este grande missionário que se tprnou o fundador das obras dos Lazaristas no Nordeste e Norte do Brasil. Este material é de grande valor, e facilitou, em alguns aspectos, a pesquisa que acaba de chegar a suas mãos.
+                </p>
+                <p>
+                    Fiquei surpreso quando, em fins de 2005, o então visitador dos Lazaristas na Holanda, Padre Victor Groetelaars, em nome do Conselho Provincial, me procurou para fazer um estudo da história da Província de Fortaleza, 
+                    convite reforçado pelo visitador daqui, Padre Fernando Barbosa dos Santos. Sabendo das minhas muitas limitações, por não ser escritor e muito menos historiador, por não dominar satisfatoriamente a língua portuguesa 
+                    para escrever um livro, e por ter participado vinte e seis anos da minha vida a história desta Província, refleti durante algumas semanas. Considerei o convite honroso e, ao mesmo tempo, um desafio. Acabei aceitando,
+                     principalmente por gratidão à PFCM, e, em especial, por respeito a tantos missionários que se dedicaram à evangelização e ao serviço “do simpáticos povo brasileiro”. Esta história jamais poderia perder-se no esquecimento e anonimato. 
+                </p>
+                <p>
+                    A pesquisa ora apresentada se baseou principalmente em documentos oficiais, Livros Tombo de paróquias e casas dos padres, relatos de reuniões dos Conselhos Provinciais e de Assembleias, cartas de Padres, Visitadores, Bispos e 
+                    instâncias congregacionais, como também nos escritos acima mencionados. Todo este material é guardado nos arquivos provinciais em Fortaleza e Panningen (Holanda), sendo que alguma documentação é originária da Cúria Geral da Congregação 
+                    em Roma, como também d Província Brasileira, com sede no Rio de Janeiro. Além disso, o estudo foi aprofundado através de publicações em livros e artigos acerca de assuntos tratados no decorrer do desenvolvimento das temáticas no presente 
+                    livro, e ainda de algumas teses universitárias escritas por membros da própria Província da Congregação da Missão. Enfim, depoimentos pessoais, orais e escritos, de diversos padres têm ajudado na compreensão da ação evangelizadora da
+                     Congregação nestas regiões do Brasil.
+                </p>
+                <p>
+                    O (a) leitor(a) encontrará muitas citações, ás vezes, longas. Foi feita opção pelas mesmas, a fim de que possamos conhecer a história, contada pelos seus próprios agentes, e também pelo fato que muito material em arquivo foi escrito em 
+                    frânces e holandês, línguas de domínio de poucos. Desta forma, textos preciosos ficarão agora à disposição de todos os interessados.
+                </p>
+                <p>
+                    Os quatro grandes temas trabalhados neste livro dizem respeito às missões, aos seminários, às paróquias e à Prelazia de Cametá. Como os mesmos voltam no decorrer das diversas fases, o (a) leitor (a), lendo o livro todo, poderá 
+                    confrontar-se com repetições, relativas a alguns dados e / ou fatos. Optamos por este método, visando que, caso alguém venha a interessar-se mais por desses assuntos principais, ele (a) encontrará uma abordagem de forma mais completa possível.
+                </p>
+                <p>
+                    Enfim, louve alguma restrição em partes da pesquisa, tanto quanto ao texto como quanto às fotos, ou por não existir material em arquivo, ou por dificuldade de acesso. Em consequência disso, há certos aspectos mais explicitados do que outros.
+                </p>
+                <p>
+                    O livro apresenta a história dos lazaristas, dividindo-a em seis fases.
+                </p>
+                <p>
+                    Na primeira fase (segunda metade do século XIX) é apresentado o contexto sociopolítico e eclesial dentro do qual a Congregação da Missão chegou às terras brasileiras. Prestamos atenção especial ao processo da romanização do século XIX no Brasil. 
+                    Nos capítulos seguintes tomamos conhecimento das linhas gerais da história das Províncias Brasileira e Holandesa, a fim de podermos entender como a Congregação acbou de chegar ao Nordeste e Norte do Brasil.
+                </p>
+                <p>
+                    A segunda fase (1890-1925) descreve a chegada dos primeiros Lazaristas holandeses, e quais foram seus trabalhos em seminários e missões, tanto no Sul como no Nordeste. Vemos como a maioria tem trabalhado na formação do clero, principalmente 
+                    nos seminários diocesanos do Sul. Enfocamos mais detalhadamente o trabalho no “Seminário Episcopal do Ceará”, conhecido como “Seminário da Prainha”, onde trabalharam, inicialmente, Lazaristas de diversos países da Europa, como também do Brasil, 
+                    todos sob a direção dos frnceses.
+                </p>
+                <p>
+                    Na terceira fase (1925-1927) vemos qual caminho foi pecorrido, que levou à fundação da Casa das Missões no bairro do Benfica em Fortaleza, no ano de 1927. Após muitas implicâncias congregacionais e eclesiais, Padre Guilherme Vaessen, 
+                    com muita insistência, conseguiu que foi “acceptée la fondation hollandaise” . Vieram os primeiros padres para a “Casa das Missões São José” no Benfica, a partir da qual foram assumidas as primeiras missões em todo o território do 
+                    Nordeste e Norte do país. Este acontecimento é considerado, hoje, como o momento fundacional da Província de Fortaleza da Congregação da Missão.
+                </p>
+                <p>
+                    Após breve exposição do momento político civil no qual se encontravam o mundo e Brasil na primeira metade do século XX, e descrição da situação da Igreja nesta época, vemos, na quarta fase (1927-1945), os trabalhos assumidos pelos 
+                    padres, que tinham vindo da Holanda. Mergulhamos na vida dos missionários que percorreram diversos estados nas regiões Nordeste e Norte, a fim de sentirmos de perto o ambiente das missões, e conhecermos métodos, conteúdos, problemas 
+                    e sucessos acerca desta maneira de evangelização, caracteristica dos Lazaristas. Nesta mesma época, foram aceitas as primeiras paróquias em Fortaleza, Bélem, ao longo do Rio Tocantins (PA), São José de Ribamar e São Luís (MA).
+                </p>
+                <p>
+                    Após breve exposição do momento político civil no qual se encontravam o mundo e Brasil na primeira metade do século XX, e descrição da situação da Igreja nesta época, vemos, na quarta fase (1927-1945), os trabalhos assumidos pelos padres, 
+                    que tinham vindo da Holanda. Mergulhamos na vida dos missionários que percorreram diversos estados nas regiões Nordeste e Norte, a fim de sentirmos de perto o ambiente das missões, e conhecermos métodos, conteúdos, problemas e sucessos 
+                    acerca desta maneira de evangelização, caracteristica dos Lazaristas. Nesta mesma época, foram aceitas as primeiras paróquias em Fortaleza, Bélem, ao longo do Rio Tocantins (PA), São José de Ribamar e São Luís (MA).
+                </p>
+                <p>
+                    A quinta fase (1945-1967) é introduzida por um olhar sobre o Brasil e o mundo nos anos pós-guerra, como também sobre a Igreja que se encontrou em tempos conciliares. No início deste período, foi fundada a Vice-Província de Fortaleza (1939). 
+                    Após o término da II Guerra Mundial, muitos novos refforços vieram da Holanda e o trabalho das missões foi ampliado com outras duas equipes de missionários. Também foram assumidos seminários menores em diversas Dioceses nos estados do 
+                    Ceará,Maranhão, Rio Grande do Norte e Paraíba. Quando, nos anos 1960, as missões findaram e os seminários foram entregues aos respectivos senhores bispos, os padres assumiram novas paróquias no Nordeste e, no Norte, a Prelazia de Cametá (PA) 
+                    foi confiada à Vice-Província de Fortaleza. Na mesma epoca, foi entregue aos padres a responsabilidade pela Escola Apostólica São Vicente no Bairro Antônio Bezerra (Fortaleza), passo decisivo para a fundação da Província autônoma de Fortaleza, 
+                    fato que ocorreu em 1967.
+                </p>
+                <p>
+                    A última fase (a partir de 1967), nos apresenta os primeiros passos da nova província, seus desafios e esperanças. Trata, em seguida, do trabalho pastoral nas paróquias, e descreve o trabalho das Comunidades Cristãs na Prelazia de Cametá. As 
+                    últimas páginas são dedicadas à situação atual da Província: o processo de brasilianização, a Pastoral Vocacional, os seminários para a formação “dos nossos”, os novos compromissos e as perspectivas para a futuro próximo.
+                </p>
+                <p>
+                    Apresentamos o caminho trilhado pelos padres da Congregação da Missão no Nordeste e Norte do Brasil (ver mapas no anexo). Evidentemente, estas páginas não contém a última palavra. Um estudo avaliativo com ajuda da especialistas em história geral, 
+                    história da Igreja e missiologia, aprofundará diversos elementos do texto que segue. Resta desejar, portanto, que haja, no futuro próximo, novos estudos e pesquisas, a fim de chegarmos a um entendimento cada vez mais aprimorado a respeito da missão, 
+                    que há de ser reavivada em sua espiritualidade, e atualizada quanto aos seus métodos e conteúdos em cada momento da nossa história.
+                </p>
+                <p></p>
+                <h2>
+                    Primeira Fase
+                </h2>
+                <h2>
+                    CONTEXTO NO QUAL A CONGREGAÇÃO DA MISSÃO CHEGOU AO BRASIL
+                </h2>
+                <p>
+                    O percurso da vida de monsieur Vicent de Paul (1581-1660) é interessante. Consideramos relevante perguntar-nos que fatores influenciaram a sua caminhada, os quais, na realidade, influenciaram a guinada radical e definitiva no destino de sua vida.
+                </p>
+                <p>
+                    Após ter optado pela vida sacerdotal por motivos comuns, Vicente de Paulo foi capaz de descobrir sua verdadeira vocação, sobressaindo em sua missão, por ter estado atento aos sinais de sua época. Dois acontecimentos marcantes do seu tempo evidenciam esses sinais:
+                </p>
+            </div>
+            <button class="bnt_sair_historia_sv" onclick="bnt_sair_historia_sv()">Voltar</button>
         </div>
+
+
+        <!-- Bloco voltado para a página de perfil-->
+        <div class="div_perfil" id="div_perfil">
+            <div class="img_div_perfil"></div>
+            <h1>São Vicente</h1>
+            <button class="bnt_img_div_perfil" id="bnt_img_div_perfil" onclick="bnt_img_div_perfil()">Upload</button>
+            <div class="b1_div_perfil">
+                
+                <h2>Olá, bem vindo!</h2>
+                <p>Teste de texto para paragrafo da página de perfil</p>
+                
+                <h3>Nome:</h3>
+                <input type="text">
+                <h3>Usuário:</h3>
+                <input type="text">
+                <h3>Cargo:</h3>
+                <input type="text">
+                <h3>Email:</h3>
+                <input type="text">
+            </div>
+        </div>
+
+
+        <!-- Bloco voltado para a página de adicionar a missa e intenções-->
+        <div class="div_missa" id="div_missa">
+            <div class="b1_div_missa">
+                <div class="texto_div_missa">
+                    <h1 class="capela_texto_div_missa">Capela</h1>
+                    <h1 class="sv_texto_div_missa">São Vicente</h1>
+                    <h2 class="subtitle_texto_div_missa">Missas e Intenções</h2>
+                    <p class="p_texto_div_missa">Ao lado adicione a missa que deseja adicionar, a data, horário e as intenções, 
+                        ao termino clique no botão adicionar e confirme as informações, caso necessário reescreva ou confirme para encerrar.<br>
+                        Para ver as informações as adicionadas, clique no botão "Ver informações" após adicionar.
+                    </p>
+                </div>
+            </div>
+            <div class="b2_div_missa">
+                <div class="inputs_div_missa">
+                    <input type="text" class="inp1_div_missa" id="inp1_div_missa" placeholder="Missa">
+                    <input type="date" class="inp2_div_missa" id="inp2_div_missa" placeholder="Data">
+                    <input type="time" class="inp3_div_missa" id="inp3_div_missa" placeholder="Horário">
+                    <textarea name="" class="inp4_div_missa" id="inp4_div_missa" placeholder="Intenções" cols="50" rows="10"></textarea>
+                    
+
+                    <button class="adc_missa_intencoes" id="adc_missa_intencoes" onclick="adc_missa_intencoes()">Adicionar</button>
+                    <button class="ver_missa_intencoes" id="ver_missa_intencoes" onclick="ver_missa_intencoes()">Ver informações</button>
+                </div>
+            </div>
+            <div class="div_ver_inf_missa" id="div_ver_inf_missa">
+                <textarea name="" id="" cols="30" rows="10" class="receber_inf_missa" id="receber_inf_missa"></textarea>
+            </div>
+        </div>
+
+
+        <!-- Bloco voltado para a página de eventos-->
+        <div class="div_eventos" id="div_eventos"></div>
+
+
+        <!-- Bloco voltado para a página de calendário-->
+        <div class="div_calendario" id="div_calendario">
+            <div class="div_interable_calendario"> <!--Div para interação do calendário-->
+
+            </div>
+            <div class="wraper"> <!--Div do calendário-->
+                <div class="days-week">
+                    <span>DOM</span>
+                    <span>SEG</span>
+                    <span>TER</span>
+                    <span>QUA</span>
+                    <span>QUI</span>
+                    <span>SEX</span>
+                    <span>SÁB</span>
+                </div>
+                <div class="number-days">
+                    <span></span>
+                    <span></span>
+                    <span>1</span>
+                    <span>2</span>
+                    <span>3</span>
+                    <span>4</span>
+                    <span>5</span>
+                    <span>6</span>
+                    <span>7</span>
+                    <span>8</span>
+                    <span>9</span>
+                    <span>10</span>
+                    <span>11</span>
+                    <span>12</span>
+                    <span>13</span>
+                    <span>14</span>
+                    <span>15</span>
+                    <span>16</span>
+                    <span>17</span>
+                    <span>18</span>
+                    <span>19</span>
+                    <span>20</span>
+                    <span>21</span>
+                    <span>22</span>
+                    <span>23</span>
+                    <span>24</span>
+                    <span>25</span>
+                    <span>26</span>
+                    <span>27</span>
+                    <span>28</span>
+                    <span>29</span>
+                    <span>30</span>
+                    <span>31</span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Bloco voltado para a página de arquivos-->
+        <div class="div_arquivos" id="div_arquivos"></div>
+
+
+        <!-- Bloco voltado para a página de configurações-->
+        <div class="div_configuracoes" id="div_configuracoes">
+            <!--<input type="text" class="modo_config" id="modo_config" placeholder="Selecione o Modo" onfocus="focado()" onblur="desfoque()">
+            <button class="aplicar_modo" onclick="aplicar_modo()">Aplicar</button>
+            <div class="dropDown">
+                <div class="listDropDown">
+                    <div class="item" id="item-1" onmousedown="category(1)">Noturno</div>
+                    <div class="item" id="item-2" onmousedown="category(2)">Claro</div>
+                </div>
+            </div>-->
+
+            <button class="bnt_desconectar" onclick="desconectar()">Desconectar</button>
+            <button class="modo_noturno_claro" onclick="aplicar_modo()">Mudar Modo</button>
+        </div>
+
     </body>
 </html>
