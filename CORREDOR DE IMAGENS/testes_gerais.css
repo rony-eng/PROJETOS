@@ -16,4 +16,5 @@ body{
 }
 .kodfun-galeri > div:hovern{
     flex: 4;
+    background-color: aliceblue;
 }
