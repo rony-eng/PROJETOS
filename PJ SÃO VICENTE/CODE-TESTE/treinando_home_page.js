@@ -1,13 +1,13 @@
 // aqui fica voltado para a página da história de são vicente
 function bnt_historia_sv(){
-    var container = document.querySelector('.historia_sv');
-    var divp = document.querySelector('.div_hp')
-    var div_perfil = document.querySelector('.div_perfil')
-    var div_missa = document.querySelector('.div_missa')
-    var div_eventos = document.querySelector('.div_eventos')
-    var div_calendário = document.querySelector('.div_calendario')
-    var div_arquivos = document.querySelector('.div_arquivos')
-    var div_configurações = document.querySelector('.div_configuracoes')
+    let container = document.querySelector('.historia_sv');
+    let divp = document.querySelector('.div_hp')
+    let div_perfil = document.querySelector('.div_perfil')
+    let div_missa = document.querySelector('.div_missa')
+    let div_eventos = document.querySelector('.div_eventos')
+    let div_calendário = document.querySelector('.div_calendario')
+    let div_arquivos = document.querySelector('.div_arquivos')
+    let div_configurações = document.querySelector('.div_configuracoes')
 
     if(container.style.display === 'none'){
         container.style.display = 'flex';
@@ -30,8 +30,8 @@ function bnt_historia_sv(){
     }
 }
 function bnt_sair_historia_sv(){
-    var container = document.querySelector('.historia_sv');
-    var divp = document.querySelector('.div_hp')
+    let container = document.querySelector('.historia_sv');
+    let divp = document.querySelector('.div_hp')
 
     if(container.style.display === 'flex'){
         container.style.display = 'none';
@@ -48,7 +48,7 @@ function bnt_sair_historia_sv(){
 
 // aqui fica voltado para a página de perfil
 function bnt_perfil(){
-    var container = document.querySelector('.div_perfil');
+    let container = document.querySelector('.div_perfil');
 
     if(container.style.display === 'none'){
         container.style.display = 'flex';
@@ -59,14 +59,14 @@ function bnt_perfil(){
 
 // aqui fica voltado para a página de missa e intenções
 function bnt_missa(){
-    var container = document.querySelector('.div_missa')
-    var divp = document.querySelector('.div_hp')
-    var div_historia_sv = document.querySelector('.historia_sv')
-    var div_perfil = document.querySelector('.div_perfil')
-    var div_eventos = document.querySelector('.div_eventos')
-    var div_calendário = document.querySelector('.div_calendario')
-    var div_arquivos = document.querySelector('.div_arquivos')
-    var div_configurações = document.querySelector('.div_configuracoes')
+    let container = document.querySelector('.div_missa')
+    let divp = document.querySelector('.div_hp')
+    let div_historia_sv = document.querySelector('.historia_sv')
+    let div_perfil = document.querySelector('.div_perfil')
+    let div_eventos = document.querySelector('.div_eventos')
+    let div_calendário = document.querySelector('.div_calendario')
+    let div_arquivos = document.querySelector('.div_arquivos')
+    let div_configurações = document.querySelector('.div_configuracoes')
 
     if(container.style.display === 'none'){
         container.style.display = 'flex';
