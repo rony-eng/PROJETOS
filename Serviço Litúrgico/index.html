@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serviço Litúrgico - Conexão de Ministérios</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: #4A55A2; /* Azul Marinho */
+            --color-secondary: #C7E8F3; /* Azul Claro */
+            --color-accent: #E1AA74; /* Dourado/Areia */
+            --color-bg: #F8FAFC;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg);
+        }
+        .btn-primary {
+            background-color: var(--color-primary);
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .btn-primary:hover {
+            background-color: #37417E;
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            background-color: var(--color-secondary);
+            color: var(--color-primary);
+            border: 1px solid var(--color-primary);
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .btn-secondary:hover {
+            background-color: #A9D9E8;
+            transform: translateY(-1px);
+        }
+        .card {
+            background-color: white;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        input[type="text"], input[type="email"], select, textarea {
+            border: 1px solid #D1D5DB;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            width: 100%;
+        }
+    </style>
+    <!-- Ícones Lucide para melhor estética -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header Fixo -->
+    <header class="bg-white shadow-md p-4 sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <span class="mr-2" data-lucide="church" style="color: var(--color-primary);"></span>
+                Serviço Litúrgico
+            </h1>
+            <nav id="main-nav">
+                <!-- Links de navegação serão injetados aqui -->
+            </nav>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal Dinâmico -->
+    <main id="app-content" class="flex-grow p-4 md:p-8">
+        <!-- O conteúdo da página será renderizado aqui -->
+        <div class="flex justify-center items-center h-full">
+            <p class="text-gray-500">Carregando...</p>
+        </div>
+    </main>
+
+    <!-- Modal para Mensagens de Sucesso/Erro (Substitui alert/confirm) -->
+    <div id="modal-container" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="card p-6 rounded-xl max-w-sm w-full mx-4 transform transition-all duration-300 scale-95 opacity-0" id="message-modal">
+            <h3 class="text-xl font-semibold mb-3 text-gray-800" id="modal-title"></h3>
+            <p class="text-gray-600 mb-4" id="modal-body"></p>
+            <button class="w-full btn-primary text-white py-2 rounded-lg font-medium" onclick="closeModal()">OK</button>
+        </div>
+    </div>
+
+    <!-- Scripts Firebase e Lógica da Aplicação -->
+    <script type="module">
+        // Variáveis globais MANDATÓRIAS (serão fornecidas pelo Canvas)
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        // IMPORTAÇÕES FIREBASE (MANDATÓRIO)
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, onSnapshot, collection, query, where, addDoc, serverTimestamp, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Variáveis de Estado Global
+        let firebaseApp;
+        let db;
+        let auth;
+        let userId = null;
+        let isAuthReady = false;
+        let isCommunity = false; // Mock para tipo de perfil
+
+        const App = {
+            currentPage: 'login',
+            data: {
+                communities: [],
+                needs: [],
+                individualProfile: null,
+                myRegisteredNeeds: [], // Necessidades do indivíduo
+                myPostedNeeds: [], // Necessidades postadas pela comunidade (se for comunidade)
+            },
+            
+            // Função para alternar a página
+            navigateTo(page, mockType = null) {
+                this.currentPage = page;
+                if (page === 'individualProfile' || page === 'communityDashboard') {
+                    this.isCommunity = (page === 'communityDashboard');
+                    this.mockSignIn(this.isCommunity ? 'community' : 'individual');
+                }
+                this.renderApp();
+            },
+
+            // Simulação de Login/Auth (Conforme solicitado)
+            async mockSignIn(type = 'individual') {
+                isCommunity = (type === 'community');
+                // Se a autenticação já estiver pronta, não refaça
+                if (isAuthReady) return;
+
+                try {
+                    firebaseApp = initializeApp(firebaseConfig);
+                    db = getFirestore(firebaseApp);
+                    auth = getAuth(firebaseApp);
+                    setLogLevel('debug'); // Ativa logs do Firestore
+
+                    // Processo de autenticação obrigatório
+                    if (initialAuthToken) {
+                        await signInWithCustomToken(auth, initialAuthToken);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+
+                    onAuthStateChanged(auth, (user) => {
+                        if (user) {
+                            userId = user.uid;
+                            isAuthReady = true;
+                            console.log("Firebase Auth Ready. User ID:", userId);
+                            
+                            // Mock: Define o tipo de perfil após a autenticação
+                            const mockUserType = isCommunity ? 'community' : 'individual';
+                            localStorage.setItem('userType', mockUserType);
+                            
+                            this.fetchData(); // Inicia a escuta de dados após o login
+                            this.renderApp(); // Renderiza o conteúdo da página
+                        } else {
+                            // Se deslogado, volta para o login
+                            userId = null;
+                            isAuthReady = true;
+                            this.currentPage = 'login';
+                            this.renderApp();
+                        }
+                    });
+
+                } catch (error) {
+                    console.error("Erro ao inicializar Firebase/Auth:", error);
+                    isAuthReady = true;
+                    this.currentPage = 'login';
+                    this.renderApp();
+                }
+            },
+
+            // 1. Definição dos caminhos do Firestore
+            getNeedsCollectionRef() {
+                // Coleção pública: /artifacts/{appId}/public/data/needs
+                return collection(db, 'artifacts', appId, 'public', 'data', 'needs');
+            },
+            getCommunitiesCollectionRef() {
+                // Coleção pública: /artifacts/{appId}/public/data/communities
+                 return collection(db, 'artifacts', appId, 'public', 'data', 'communities');
+            },
+            getIndividualDataRef(type = 'individual') {
+                // Dados do usuário (privado): /artifacts/{appId}/users/{userId}/{type}
+                return doc(db, 'artifacts', appId, 'users', userId, type, 'profile');
+            },
+            getRegistrationCollectionRef() {
+                // Registros de um indivíduo em necessidades (privado): /artifacts/{appId}/users/{userId}/registrations
+                 return collection(db, 'artifacts', appId, 'users', userId, 'registrations');
+            },
+
+
+            // 2. Escuta de Dados (onSnapshot)
+            fetchData() {
+                if (!isAuthReady || !userId || !db) return;
+                
+                const userType = localStorage.getItem('userType');
+                isCommunity = (userType === 'community');
+                
+                // Escuta de Necessidades (Pública)
+                onSnapshot(this.getNeedsCollectionRef(), (snapshot) => {
+                    this.data.needs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    this.renderApp();
+                }, (error) => console.error("Erro ao buscar necessidades:", error));
+                
+                 // Escuta de Comunidades (Pública)
+                onSnapshot(this.getCommunitiesCollectionRef(), (snapshot) => {
+                    this.data.communities = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    this.renderApp();
+                }, (error) => console.error("Erro ao buscar comunidades:", error));
+
+                // Escuta de Perfil Individual (Privado)
+                onSnapshot(this.getIndividualDataRef('individual'), (doc) => {
+                    this.data.individualProfile = doc.exists() ? doc.data() : null;
+                    this.renderApp();
+                }, (error) => console.error("Erro ao buscar perfil individual:", error));
+
+                // Escuta de Necessidades Registradas (Privado - Indivíduo)
+                 onSnapshot(this.getRegistrationCollectionRef(), (snapshot) => {
+                    this.data.myRegisteredNeeds = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    this.renderApp();
+                }, (error) => console.error("Erro ao buscar registros:", error));
+            },
+
+            // 3. Ações de Escrita de Dados (Simuladas/Incompletas para a demo)
+
+            async registerCommunity(formData) {
+                 if (!isAuthReady || !db) {
+                    showModal("Erro de Conexão", "Aguarde a inicialização da conexão ou tente novamente.");
+                    return;
+                }
+                
+                try {
+                    const docRef = await addDoc(this.getCommunitiesCollectionRef(), {
+                        ...formData,
+                        posterId: userId,
+                        createdAt: serverTimestamp()
+                    });
+                    
+                    // Mock: Seta o tipo de usuário para comunidade e navega para o dashboard
+                    localStorage.setItem('userType', 'community');
+                    showModal("Sucesso", "Comunidade cadastrada! Você será redirecionado para o Painel de Comunidade (Mock).");
+                    this.navigateTo('communityDashboard');
+                } catch (e) {
+                    console.error("Erro ao adicionar documento: ", e);
+                    showModal("Erro", "Falha ao cadastrar comunidade.");
+                }
+            },
+            
+            async registerIndividualProfile(formData) {
+                if (!isAuthReady || !db) {
+                    showModal("Erro de Conexão", "Aguarde a inicialização da conexão ou tente novamente.");
+                    return;
+                }
+
+                try {
+                    // Usa setDoc com o ID do usuário para o documento de perfil
+                    await setDoc(this.getIndividualDataRef('individual'), {
+                        ...formData,
+                        roles: formData.roles.split(',').map(r => r.trim()).filter(r => r),
+                        userId: userId,
+                        updatedAt: serverTimestamp()
+                    });
+                    
+                    // Mock: Seta o tipo de usuário para individual e navega para o dashboard
+                    localStorage.setItem('userType', 'individual');
+                    showModal("Sucesso", "Perfil individual criado! Você será redirecionado para o Painel.");
+                    this.navigateTo('individualProfile');
+
+                } catch (e) {
+                    console.error("Erro ao registrar perfil individual: ", e);
+                    showModal("Erro", "Falha ao cadastrar perfil.");
+                }
+            },
+            
+            async registerNeed(formData) {
+                if (!isAuthReady || !db) {
+                    showModal("Erro de Conexão", "Aguarde a inicialização da conexão ou tente novamente.");
+                    return;
+                }
+
+                try {
+                    await addDoc(this.getNeedsCollectionRef(), {
+                        ...formData,
+                        communityId: userId, // Assume que o userId da auth é o ID da Comunidade
+                        status: 'open',
+                        postedAt: serverTimestamp()
+                    });
+                    showModal("Sucesso", "Necessidade litúrgica publicada!");
+                    this.renderApp();
+                } catch (e) {
+                    console.error("Erro ao publicar necessidade: ", e);
+                    showModal("Erro", "Falha ao publicar necessidade.");
+                }
+            },
+            
+            async applyForNeed(needId, needRole, needEvent, communityName) {
+                 if (!isAuthReady || !db) {
+                    showModal("Erro de Conexão", "Aguarde a inicialização da conexão ou tente novamente.");
+                    return;
+                }
+
+                try {
+                    // Adiciona o registro na coleção privada do indivíduo
+                    await addDoc(this.getRegistrationCollectionRef(), {
+                        needId: needId,
+                        role: needRole,
+                        event: needEvent,
+                        communityName: communityName,
+                        appliedAt: serverTimestamp(),
+                        status: 'Pendente' 
+                    });
+                    showModal("Inscrição Confirmada", `Você se inscreveu como ${needRole} para o evento "${needEvent}" da comunidade ${communityName}.`);
+                } catch (e) {
+                     console.error("Erro ao aplicar para necessidade: ", e);
+                     showModal("Erro", "Falha ao registrar sua inscrição.");
+                }
+            },
+
+            // 4. Funções de Renderização de Views
+
+            renderApp() {
+                const contentDiv = document.getElementById('app-content');
+                const navDiv = document.getElementById('main-nav');
+                
+                // Renderiza o cabeçalho de navegação
+                navDiv.innerHTML = this.renderNav();
+
+                // Renderiza o conteúdo da página
+                switch (this.currentPage) {
+                    case 'login':
+                        contentDiv.innerHTML = this.renderLoginPage();
+                        break;
+                    case 'registerIndividual':
+                        contentDiv.innerHTML = this.renderRegisterIndividualPage();
+                        break;
+                    case 'registerCommunity':
+                        contentDiv.innerHTML = this.renderRegisterCommunityPage();
+                        break;
+                    case 'individualProfile':
+                        contentDiv.innerHTML = this.renderIndividualProfileDashboard();
+                        break;
+                    case 'communityDashboard':
+                        contentDiv.innerHTML = this.renderCommunityDashboard();
+                        break;
+                    default:
+                        contentDiv.innerHTML = `
+                            <div class="max-w-xl mx-auto text-center py-16">
+                                <h2 class="text-3xl font-bold text-red-600 mb-4">Página Não Encontrada</h2>
+                                <p class="text-lg text-gray-700">Ocorreu um erro de navegação.</p>
+                                <button class="mt-6 btn-primary text-white py-2 px-4 rounded-lg" onclick="App.navigateTo('login')">Voltar ao Início</button>
+                            </div>
+                        `;
+                        break;
+                }
+                
+                // Inicializa ícones do Lucide
+                lucide.createIcons();
+            },
+            
+            renderNav() {
+                 let navHtml = '';
+                 
+                 if (isAuthReady && userId) {
+                    // Menu para usuário logado (individual)
+                    if (localStorage.getItem('userType') === 'individual') {
+                        navHtml = `
+                            <button class="text-gray-600 hover:text-gray-800 font-medium mr-4" onclick="App.navigateTo('individualProfile')">Painel</button>
+                            <span class="text-sm text-gray-500 mr-2">Usuário: ${userId.substring(0, 8)}...</span>
+                            <button class="btn-secondary py-1 px-3 rounded-lg text-sm" onclick="App.navigateTo('login')">Sair (Simulado)</button>
+                        `;
+                    } 
+                    // Menu para usuário logado (comunidade)
+                    else if (localStorage.getItem('userType') === 'community') {
+                         navHtml = `
+                            <button class="text-gray-600 hover:text-gray-800 font-medium mr-4" onclick="App.navigateTo('communityDashboard')">Painel Comunidade</button>
+                            <span class="text-sm text-gray-500 mr-2">Comunidade ID: ${userId.substring(0, 8)}...</span>
+                            <button class="btn-secondary py-1 px-3 rounded-lg text-sm" onclick="App.navigateTo('login')">Sair (Simulado)</button>
+                        `;
+                    }
+                 } else {
+                     // Menu para página de login
+                     navHtml = `
+                        <button class="text-gray-600 hover:text-gray-800 font-medium mr-4" onclick="App.navigateTo('registerIndividual')">Cadastrar Indivíduo</button>
+                        <button class="btn-primary text-white py-1 px-3 rounded-lg text-sm" onclick="App.navigateTo('registerCommunity')">Cadastrar Comunidade</button>
+                     `;
+                 }
+                 
+                 return navHtml;
+            },
+
+
+            // --- VIEWS ---
+
+            // 1. Página de Login (Inicial)
+            renderLoginPage() {
+                return `
+                    <div class="flex items-center justify-center min-h-[calc(100vh-6rem)]">
+                        <div class="card p-8 rounded-2xl w-full max-w-md text-center">
+                            <h2 class="text-3xl font-extrabold mb-2 text-gray-900">Bem-vindo(a) ao Serviço Litúrgico</h2>
+                            <p class="text-gray-600 mb-8">Conectando ministros aos serviços da Igreja.</p>
+                            
+                            <!-- Bloco de Login (Simulado) -->
+                            <div class="mb-8 p-6 bg-gray-50 rounded-xl border border-gray-200">
+                                <h3 class="text-xl font-semibold mb-4 text-gray-800">Entrar (Simulação)</h3>
+                                <p class="text-sm text-gray-500 mb-4">Escolha o tipo de perfil para simular o login e acessar o painel:</p>
+                                
+                                <div class="space-y-4">
+                                    <button 
+                                        class="w-full btn-primary text-white py-3 rounded-lg font-semibold flex items-center justify-center" 
+                                        onclick="App.navigateTo('individualProfile', 'individual')">
+                                        <span data-lucide="user" class="w-5 h-5 mr-2"></span>
+                                        Sou Ministro/Fiel (Individual)
+                                    </button>
+                                    <button 
+                                        class="w-full btn-secondary py-3 rounded-lg font-semibold flex items-center justify-center"
+                                        onclick="App.navigateTo('communityDashboard', 'community')">
+                                        <span data-lucide="church" class="w-5 h-5 mr-2"></span>
+                                        Sou Comunidade/Paróquia
+                                    </button>
+                                </div>
+                            </div>
+
+                            <p class="text-sm text-gray-500 mt-6">Ainda não tem cadastro?</p>
+                            <div class="flex flex-col md:flex-row justify-center space-y-3 md:space-y-0 md:space-x-3 mt-3">
+                                <button class="w-full md:w-auto text-sm text-gray-600 hover:text-gray-800 font-medium" onclick="App.navigateTo('registerIndividual')">
+                                    Cadastrar Perfil Individual
+                                </button>
+                                <span class="hidden md:inline text-gray-300">|</span>
+                                <button class="w-full md:w-auto text-sm text-gray-600 hover:text-gray-800 font-medium" onclick="App.navigateTo('registerCommunity')">
+                                    Cadastrar Comunidade
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            },
+
+            // 2. Página de Cadastro de Comunidade
+            renderRegisterCommunityPage() {
+                return `
+                    <div class="max-w-xl mx-auto py-8">
+                        <div class="card p-8 rounded-2xl">
+                            <h2 class="text-2xl font-bold mb-6 text-gray-800 flex items-center">
+                                <span data-lucide="plus-square" class="w-6 h-6 mr-2 text-red-600"></span>
+                                Cadastro de Comunidade/Paróquia
+                            </h2>
+                            <p class="text-gray-600 mb-6">Preencha os dados para que possa começar a postar suas necessidades de serviço litúrgico.</p>
+                            
+                            <form id="community-form" onsubmit="event.preventDefault(); submitCommunityRegistration()">
+                                <div class="space-y-4">
+                                    <div>
+                                        <label for="community-name" class="block text-sm font-medium text-gray-700 mb-1">Nome da Comunidade / Paróquia</label>
+                                        <input type="text" id="community-name" name="name" required placeholder="Ex: Paróquia São José Operário">
+                                    </div>
+                                    <div>
+                                        <label for="community-city" class="block text-sm font-medium text-gray-700 mb-1">Cidade e Estado</label>
+                                        <input type="text" id="community-city" name="city" required placeholder="Ex: Rio de Janeiro, RJ">
+                                    </div>
+                                    <div>
+                                        <label for="community-contact" class="block text-sm font-medium text-gray-700 mb-1">Nome do Contato Principal</label>
+                                        <input type="text" id="community-contact" name="contact" required placeholder="Ex: Padre João Silva">
+                                    </div>
+                                    <div>
+                                        <label for="community-email" class="block text-sm font-medium text-gray-700 mb-1">Email de Contato</label>
+                                        <input type="email" id="community-email" name="email" required placeholder="email@paroquia.com.br">
+                                    </div>
+                                    <div>
+                                        <label for="community-desc" class="block text-sm font-medium text-gray-700 mb-1">Descrição Breve da Comunidade</label>
+                                        <textarea id="community-desc" name="description" rows="3" placeholder="Fale um pouco sobre a comunidade e suas celebrações."></textarea>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="w-full mt-8 btn-primary text-white py-3 rounded-lg font-semibold">
+                                    Cadastrar Comunidade
+                                </button>
+                                <button type="button" class="w-full mt-4 btn-secondary py-3 rounded-lg font-semibold" onclick="App.navigateTo('login')">
+                                    Voltar para Login
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                `;
+            },
+
+            // 3. Página de Cadastro de Perfil Individual
+            renderRegisterIndividualPage() {
+                return `
+                    <div class="max-w-xl mx-auto py-8">
+                        <div class="card p-8 rounded-2xl">
+                            <h2 class="text-2xl font-bold mb-6 text-gray-800 flex items-center">
+                                <span data-lucide="user-plus" class="w-6 h-6 mr-2 text-green-600"></span>
+                                Cadastro de Perfil Individual
+                            </h2>
+                            <p class="text-gray-600 mb-6">Informe seu nome e quais serviços litúrgicos você pode oferecer.</p>
+                            
+                            <form id="individual-form" onsubmit="event.preventDefault(); submitIndividualRegistration()">
+                                <div class="space-y-4">
+                                    <div>
+                                        <label for="individual-name" class="block text-sm font-medium text-gray-700 mb-1">Seu Nome Completo</label>
+                                        <input type="text" id="individual-name" name="name" required placeholder="Ex: Maria da Penha">
+                                    </div>
+                                    <div>
+                                        <label for="individual-city" class="block text-sm font-medium text-gray-700 mb-1">Cidade e Estado de Residência</label>
+                                        <input type="text" id="individual-city" name="city" required placeholder="Ex: São Paulo, SP">
+                                    </div>
+                                    <div>
+                                        <label for="individual-roles" class="block text-sm font-medium text-gray-700 mb-1">Serviços que Oferece (Separados por vírgula)</label>
+                                        <input type="text" id="individual-roles" name="roles" required 
+                                               placeholder="Ex: Cantor, Tocador (Violão), Leitor, Salmista">
+                                        <p class="text-xs text-gray-500 mt-1">Isso ajudará as comunidades a te encontrarem.</p>
+                                    </div>
+                                    <div>
+                                        <label for="individual-bio" class="block text-sm font-medium text-gray-700 mb-1">Breve Biografia/Disponibilidade</label>
+                                        <textarea id="individual-bio" name="bio" rows="3" placeholder="Ex: Ministro de Música há 5 anos, disponível para eventos aos fins de semana."></textarea>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="w-full mt-8 btn-primary text-white py-3 rounded-lg font-semibold">
+                                    Criar Meu Perfil
+                                </button>
+                                <button type="button" class="w-full mt-4 btn-secondary py-3 rounded-lg font-semibold" onclick="App.navigateTo('login')">
+                                    Voltar para Login
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                `;
+            },
+
+            // 4. Painel Individual (Ministro/Fiel) - Principal
+            renderIndividualProfileDashboard() {
+                const profile = this.data.individualProfile;
+                const needs = this.data.needs;
+                const registrations = this.data.myRegisteredNeeds;
+                
+                let profileInfo = `
+                    <div class="bg-yellow-100 p-4 rounded-xl flex items-center space-x-3 mb-6">
+                        <span data-lucide="alert-triangle" class="w-5 h-5 text-yellow-600"></span>
+                        <p class="text-yellow-800 text-sm">Seu perfil ainda não foi criado. Clique no botão abaixo para preencher seus dados.</p>
+                    </div>
+                    <button class="btn-primary text-white py-2 px-4 rounded-lg mb-8" onclick="App.navigateTo('registerIndividual')">
+                        Completar Cadastro de Perfil
+                    </button>
+                `;
+                
+                if (profile) {
+                     profileInfo = `
+                        <div class="card p-6 rounded-xl mb-8 border-l-4 border-l-green-500">
+                            <h3 class="text-xl font-bold mb-3 text-gray-800">${profile.name} <span class="text-xs text-gray-500 ml-2">(${profile.city})</span></h3>
+                            <p class="text-sm text-gray-600 mb-2">${profile.bio || 'Nenhuma biografia fornecida.'}</p>
+                            <p class="text-sm font-semibold text-green-700">Funções: <span class="font-normal text-gray-700">${profile.roles ? profile.roles.join(', ') : 'Nenhuma função cadastrada.'}</span></p>
+                            <button class="mt-4 text-xs text-blue-600 hover:text-blue-800 font-medium" onclick="App.navigateTo('registerIndividual')">Editar Perfil</button>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="max-w-6xl mx-auto">
+                        <h2 class="text-3xl font-bold mb-6 text-gray-900">Painel do Ministro - Olá, ${profile ? profile.name.split(' ')[0] : 'Irmão(ã)'}!</h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                            
+                            <!-- Coluna 1: Meu Perfil e Inscrições Ativas -->
+                            <div class="lg:col-span-1">
+                                <h3 class="text-2xl font-semibold mb-4 text-gray-800">Meu Perfil e Registros</h3>
+                                ${profileInfo}
+                                
+                                <div class="card p-6 rounded-xl">
+                                    <h4 class="font-bold text-lg mb-4 text-gray-700 flex items-center"><span data-lucide="clipboard-list" class="w-5 h-5 mr-2"></span>Minhas Inscrições Ativas</h4>
+                                    <ul class="space-y-3">
+                                        ${registrations.length > 0 ? registrations.map(reg => `
+                                            <li class="border-b pb-2">
+                                                <p class="font-medium text-gray-900">${reg.role} - <span class="text-sm text-blue-600">${reg.status}</span></p>
+                                                <p class="text-xs text-gray-600">Evento: ${reg.event} (${reg.communityName})</p>
+                                            </li>
+                                        `).join('') : '<p class="text-sm text-gray-500">Você não possui inscrições ativas.</p>'}
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Coluna 2: Necessidades em Aberto -->
+                            <div class="lg:col-span-2">
+                                <h3 class="text-2xl font-semibold mb-4 text-gray-800 flex items-center">
+                                    <span data-lucide="calendar-check" class="w-6 h-6 mr-2"></span>
+                                    Serviços Litúrgicos em Aberto
+                                </h3>
+
+                                <div class="space-y-4">
+                                    ${needs.length > 0 ? needs.map(need => {
+                                        const community = this.data.communities.find(c => c.id === need.communityId);
+                                        const communityName = community ? community.name : 'Comunidade Desconhecida';
+                                        
+                                        // Verifica se o indivíduo já se inscreveu nesta necessidade
+                                        const isApplied = registrations.some(reg => reg.needId === need.id);
+                                        
+                                        return `
+                                            <div class="card p-5 rounded-xl border-l-4 border-l-accent">
+                                                <div class="flex justify-between items-start mb-2">
+                                                    <h4 class="text-xl font-bold text-gray-900">${need.role}</h4>
+                                                    <p class="text-xs font-medium text-white bg-red-500 px-3 py-1 rounded-full">${need.event}</p>
+                                                </div>
+                                                
+                                                <p class="text-sm text-gray-700 mb-3">Comunidade: <span class="font-semibold">${communityName}</span> em ${need.location}</p>
+                                                <p class="text-sm text-gray-500 mb-3">Data: ${need.date}</p>
+                                                <p class="text-sm text-gray-700 italic mb-4">"${need.description || 'Nenhuma descrição fornecida.'}"</p>
+                                                
+                                                ${isApplied 
+                                                    ? `<button disabled class="w-full bg-gray-400 text-white py-2 rounded-lg font-medium cursor-not-allowed">
+                                                         Inscrição Enviada
+                                                       </button>`
+                                                    : `<button class="w-full btn-primary text-white py-2 rounded-lg font-medium" 
+                                                         onclick="App.applyForNeed('${need.id}', '${need.role}', '${need.event}', '${communityName}')">
+                                                         Me Inscrever para este Serviço
+                                                       </button>`
+                                                }
+                                            </div>
+                                        `;
+                                    }).join('') : `
+                                        <div class="card p-5 rounded-xl text-center text-gray-500">
+                                            Nenhuma necessidade litúrgica em aberto no momento.
+                                        </div>
+                                    `}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            },
+            
+            // 5. Painel da Comunidade
+            renderCommunityDashboard() {
+                const myCommunity = this.data.communities.find(c => c.posterId === userId);
+                const myPostedNeeds = this.data.needs.filter(n => n.communityId === userId);
+                
+                // MOCK de dados: Se a comunidade não estiver cadastrada, pede para cadastrar
+                if (!myCommunity) {
+                    return `
+                        <div class="flex items-center justify-center min-h-[calc(100vh-6rem)]">
+                            <div class="card p-8 rounded-2xl w-full max-w-lg text-center">
+                                <h2 class="text-3xl font-bold mb-4 text-red-600">Comunidade Não Encontrada</h2>
+                                <p class="text-gray-600 mb-6">Seu perfil de Comunidade não está cadastrado. Por favor, complete o cadastro para publicar necessidades.</p>
+                                <button class="w-full btn-primary text-white py-3 rounded-lg font-semibold" onclick="App.navigateTo('registerCommunity')">
+                                    Cadastrar Comunidade Agora
+                                </button>
+                                <p class="text-xs text-gray-500 mt-4">ID de Usuário: ${userId}</p>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="max-w-6xl mx-auto">
+                        <h2 class="text-3xl font-bold mb-2 text-gray-900">Painel da Comunidade: ${myCommunity.name}</h2>
+                        <p class="text-lg text-gray-600 mb-8">Gerencie suas necessidades litúrgicas e veja as inscrições.</p>
+                        
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                            
+                            <!-- Coluna 1: Publicar Nova Necessidade -->
+                            <div class="lg:col-span-1">
+                                <div class="card p-6 rounded-xl border-t-4 border-t-primary">
+                                    <h3 class="text-2xl font-semibold mb-4 text-gray-800 flex items-center"><span data-lucide="upload" class="w-6 h-6 mr-2"></span> Publicar Nova Necessidade</h3>
+                                    <form id="need-form" onsubmit="event.preventDefault(); submitNeedRegistration()">
+                                        <div class="space-y-4">
+                                            <div>
+                                                <label for="need-role" class="block text-sm font-medium text-gray-700 mb-1">Função Requerida</label>
+                                                <select id="need-role" name="role" required>
+                                                    <option value="">Selecione a Função</option>
+                                                    <option value="Cantor">Cantor(a)</option>
+                                                    <option value="Tocador (Teclado)">Tocador (Teclado)</option>
+                                                    <option value="Tocador (Violão)">Tocador (Violão)</option>
+                                                    <option value="Leitor">Leitor(a)</option>
+                                                    <option value="Salmista">Salmista</option>
+                                                    <option value="Outro Ministro">Outro Ministro</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label for="need-event" class="block text-sm font-medium text-gray-700 mb-1">Nome do Evento/Celebração</label>
+                                                <input type="text" id="need-event" name="event" required placeholder="Ex: Missa de Domingo - 10h">
+                                            </div>
+                                            <div>
+                                                <label for="need-date" class="block text-sm font-medium text-gray-700 mb-1">Data/Hora (Ex: 20/12/2025 - 19:30)</label>
+                                                <input type="text" id="need-date" name="date" required placeholder="Data e hora do serviço">
+                                            </div>
+                                            <div>
+                                                <label for="need-location" class="block text-sm font-medium text-gray-700 mb-1">Local (Ex: Capela Nossa Senhora)</label>
+                                                <input type="text" id="need-location" name="location" required placeholder="Local na sua Comunidade">
+                                            </div>
+                                            <div>
+                                                <label for="need-desc" class="block text-sm font-medium text-gray-700 mb-1">Detalhes Adicionais</label>
+                                                <textarea id="need-desc" name="description" rows="2" placeholder="Ex: Necessário ter repertório Mariano."></textarea>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="w-full mt-6 btn-primary text-white py-3 rounded-lg font-semibold">
+                                            Publicar Necessidade
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            
+                            <!-- Coluna 2/3: Necessidades Publicadas e Inscrições -->
+                            <div class="lg:col-span-2">
+                                <h3 class="text-2xl font-semibold mb-4 text-gray-800 flex items-center"><span data-lucide="list-checks" class="w-6 h-6 mr-2"></span> Minhas Necessidades Publicadas</h3>
+                                
+                                <div class="space-y-4">
+                                    ${myPostedNeeds.length > 0 ? myPostedNeeds.map(need => {
+                                        // MOCK: Encontra quem se inscreveu (apenas mock para a comunidade ver, no futuro seria uma query)
+                                        const registrations = App.data.myRegisteredNeeds.filter(reg => reg.needId === need.id); 
+                                        
+                                        return `
+                                            <div class="card p-5 rounded-xl border-l-4 border-l-secondary">
+                                                <div class="flex justify-between items-start mb-2">
+                                                    <div>
+                                                        <h4 class="text-xl font-bold text-gray-900">${need.role}</h4>
+                                                        <p class="text-sm text-gray-700">${need.event} em ${need.date}</p>
+                                                    </div>
+                                                    <p class="text-xs font-medium text-white bg-primary px-3 py-1 rounded-full">${need.status}</p>
+                                                </div>
+                                                
+                                                <div class="mt-4 pt-4 border-t">
+                                                    <h5 class="font-semibold text-sm mb-2 text-gray-700">Interessados:</h5>
+                                                    <ul class="space-y-1">
+                                                        ${registrations.length > 0 ? registrations.map(reg => `
+                                                            <li class="flex justify-between items-center text-sm text-gray-800 bg-gray-50 p-2 rounded-lg">
+                                                                <span class="font-medium">${reg.communityName} (Ministro Mock)</span>
+                                                                <span class="text-xs text-blue-500">${reg.status}</span>
+                                                            </li>
+                                                        `).join('') : '<p class="text-xs text-gray-500">Ninguém se inscreveu ainda.</p>'}
+                                                    </ul>
+                                                    <!-- Ação Mock -->
+                                                    <button class="text-xs text-red-600 hover:text-red-800 mt-3 font-medium">Gerenciar Inscrições (Ação Futura)</button>
+                                                </div>
+                                            </div>
+                                        `;
+                                    }).join('') : `
+                                        <div class="card p-5 rounded-xl text-center text-gray-500">
+                                            Você ainda não publicou nenhuma necessidade.
+                                        </div>
+                                    `}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            },
+        };
+
+        // --- Funções de Submissão de Formulários ---
+
+        function getFormData(formId) {
+            const form = document.getElementById(formId);
+            const formData = new FormData(form);
+            const data = {};
+            for (const [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+            return data;
+        }
+
+        async function submitCommunityRegistration() {
+            const formData = getFormData('community-form');
+            // Validação simples
+            if (!formData.name || !formData.email) {
+                showModal("Erro", "Por favor, preencha todos os campos obrigatórios.");
+                return;
+            }
+            await App.registerCommunity(formData);
+        }
+
+        async function submitIndividualRegistration() {
+            const formData = getFormData('individual-form');
+            if (!formData.name || !formData.roles) {
+                showModal("Erro", "Por favor, preencha seu nome e os serviços que oferece.");
+                return;
+            }
+            await App.registerIndividualProfile(formData);
+        }
+        
+        async function submitNeedRegistration() {
+            const formData = getFormData('need-form');
+            if (!formData.role || !formData.event || !formData.date) {
+                showModal("Erro", "Por favor, preencha a função, o evento e a data.");
+                return;
+            }
+            await App.registerNeed(formData);
+        }
+
+
+        // --- Funções do Modal (Substituto do Alert) ---
+
+        window.closeModal = () => {
+            const container = document.getElementById('modal-container');
+            const modal = document.getElementById('message-modal');
+            modal.classList.add('opacity-0', 'scale-95');
+            modal.classList.remove('opacity-100', 'scale-100');
+            setTimeout(() => {
+                container.classList.add('hidden');
+            }, 300);
+        };
+
+        window.showModal = (title, body) => {
+            const container = document.getElementById('modal-container');
+            const modal = document.getElementById('message-modal');
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-body').textContent = body;
+            
+            container.classList.remove('hidden');
+            container.classList.add('flex');
+            
+            // Força o reflow para a transição
+            container.offsetWidth; 
+            
+            modal.classList.remove('opacity-0', 'scale-95');
+            modal.classList.add('opacity-100', 'scale-100');
+        };
+
+
+        // --- Inicialização ---
+
+        window.onload = function () {
+             // Tenta manter o usuário logado se ele não tiver saído
+             const lastUserType = localStorage.getItem('userType');
+             if (lastUserType === 'individual') {
+                 App.navigateTo('individualProfile');
+             } else if (lastUserType === 'community') {
+                 App.navigateTo('communityDashboard');
+             } else {
+                 App.navigateTo('login');
+             }
+        };
+
+        // Exporta para que as funções do App sejam acessíveis no HTML
+        window.App = App;
+    </script>
+</body>
+</html>
