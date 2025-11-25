@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Senhas Fortes</title>
+    <!-- Carrega o Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Define a fonte Inter como padrão */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        
+        :root {
+            --primary: #4f46e5; /* Indigo-600 */
+            --background: #0f172a; /* Slate-900 */
+            --card: #1e293b; /* Slate-800 */
+            --text-light: #f8fafc; /* Slate-50 */
+            --text-muted: #94a3b8; /* Slate-400 */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text-light);
+            transition: background-color 0.3s;
+        }
+
+        /* Estilo personalizado para o slider range */
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            margin-top: -6px; /* Ajusta a posição vertical */
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+        }
+        input[type=range]::-moz-range-thumb {
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            border: none;
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: var(--text-muted);
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <!-- Container Principal do Gerador -->
+    <div id="generator-card" class="bg-card w-full max-w-lg p-6 md:p-8 rounded-xl shadow-2xl transition-all duration-300">
+        
+        <h1 class="text-3xl font-bold text-center mb-6 text-primary">
+            Gerador de Senhas Fortes
+        </h1>
+        <p class="text-center text-text-muted mb-8">
+            Personalize sua senha para máxima segurança.
+        </p>
+
+        <!-- Área de Exibição da Senha -->
+        <div class="mb-8">
+            <div id="password-display" 
+                 class="bg-background border border-gray-700 h-16 flex items-center justify-between p-4 rounded-lg text-2xl font-mono break-all cursor-pointer transition-colors duration-200 hover:border-indigo-500"
+                 title="Clique para copiar">
+                Clique em "Gerar"
+            </div>
+            <button id="copy-button" class="w-full mt-3 bg-indigo-700 text-text-light py-2 rounded-lg font-semibold hover:bg-indigo-600 transition duration-150 shadow-md">
+                Copiar Senha
+            </button>
+        </div>
+        
+        <!-- Controles de Configuração -->
+        <div class="space-y-4">
+            
+            <!-- Comprimento da Senha -->
+            <div class="flex flex-col">
+                <label for="length-slider" class="text-lg font-medium mb-2 flex justify-between">
+                    Comprimento da Senha: 
+                    <span id="length-value" class="text-primary font-bold">12</span>
+                </label>
+                <input type="range" id="length-slider" min="6" max="32" value="12" class="w-full appearance-none h-1 bg-gray-700 rounded-lg">
+            </div>
+
+            <!-- Opções de Caracteres -->
+            <div class="grid grid-cols-2 gap-4 pt-4">
+                
+                <label class="flex items-center text-lg cursor-pointer">
+                    <input type="checkbox" id="include-uppercase" checked class="form-checkbox h-5 w-5 text-primary bg-gray-700 border-gray-600 rounded focus:ring-primary">
+                    <span class="ml-3 text-text-light">Maiúsculas (A-Z)</span>
+                </label>
+                
+                <label class="flex items-center text-lg cursor-pointer">
+                    <input type="checkbox" id="include-lowercase" checked class="form-checkbox h-5 w-5 text-primary bg-gray-700 border-gray-600 rounded focus:ring-primary">
+                    <span class="ml-3 text-text-light">Minúsculas (a-z)</span>
+                </label>
+                
+                <label class="flex items-center text-lg cursor-pointer">
+                    <input type="checkbox" id="include-numbers" checked class="form-checkbox h-5 w-5 text-primary bg-gray-700 border-gray-600 rounded focus:ring-primary">
+                    <span class="ml-3 text-text-light">Números (0-9)</span>
+                </label>
+                
+                <label class="flex items-center text-lg cursor-pointer">
+                    <input type="checkbox" id="include-symbols" class="form-checkbox h-5 w-5 text-primary bg-gray-700 border-gray-600 rounded focus:ring-primary">
+                    <span class="ml-3 text-text-light">Símbolos (!@#$)</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Botão Gerar -->
+        <button id="generate-button" class="w-full mt-8 bg-primary text-text-light text-xl py-3 rounded-xl font-bold hover:bg-indigo-500 transition duration-150 shadow-lg shadow-indigo-500/50">
+            GERAR SENHA
+        </button>
+
+        <!-- Mensagem de Erro/Cópia -->
+        <div id="message-area" class="mt-4 text-center h-5 text-sm text-red-400 font-medium"></div>
+
+    </div>
+
+    <script>
+        // Mapeamento dos elementos do DOM
+        const passwordDisplay = document.getElementById('password-display');
+        const lengthSlider = document.getElementById('length-slider');
+        const lengthValue = document.getElementById('length-value');
+        const includeUppercase = document.getElementById('include-uppercase');
+        const includeLowercase = document.getElementById('include-lowercase');
+        const includeNumbers = document.getElementById('include-numbers');
+        const includeSymbols = document.getElementById('include-symbols');
+        const generateButton = document.getElementById('generate-button');
+        const copyButton = document.getElementById('copy-button');
+        const messageArea = document.getElementById('message-area');
+
+        // Conjuntos de caracteres
+        const chars = {
+            uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+            lowercase: 'abcdefghijklmnopqrstuvwxyz',
+            numbers: '0123456789',
+            symbols: '!@#$%^&*()_+~`|}{[]:;?><,./-='
+        };
+
+        // Função para mostrar mensagens temporárias
+        function showMessage(text, isError = false) {
+            messageArea.textContent = text;
+            messageArea.className = isError 
+                ? 'mt-4 text-center h-5 text-sm text-red-400 font-medium' 
+                : 'mt-4 text-center h-5 text-sm text-green-400 font-medium';
+            setTimeout(() => {
+                messageArea.textContent = '';
+            }, 3000);
+        }
+
+        /**
+         * Gera uma senha forte com base nas configurações.
+         */
+        function generatePassword() {
+            const length = parseInt(lengthSlider.value);
+            let characterPool = '';
+            let guaranteedChars = [];
+            let newPassword = '';
+
+            // 1. Constrói o conjunto de caracteres e garante pelo menos um de cada tipo selecionado
+            if (includeUppercase.checked) {
+                characterPool += chars.uppercase;
+                guaranteedChars.push(chars.uppercase.charAt(Math.floor(Math.random() * chars.uppercase.length)));
+            }
+            if (includeLowercase.checked) {
+                characterPool += chars.lowercase;
+                guaranteedChars.push(chars.lowercase.charAt(Math.floor(Math.random() * chars.lowercase.length)));
+            }
+            if (includeNumbers.checked) {
+                characterPool += chars.numbers;
+                guaranteedChars.push(chars.numbers.charAt(Math.floor(Math.random() * chars.numbers.length)));
+            }
+            if (includeSymbols.checked) {
+                characterPool += chars.symbols;
+                guaranteedChars.push(chars.symbols.charAt(Math.floor(Math.random() * chars.symbols.length)));
+            }
+
+            // Verifica se pelo menos uma opção está selecionada
+            if (characterPool.length === 0) {
+                showMessage("Selecione pelo menos um tipo de caractere!", true);
+                passwordDisplay.textContent = 'ERRO: Sem opções';
+                return;
+            }
+
+            // 2. Preenche o restante da senha
+            for (let i = guaranteedChars.length; i < length; i++) {
+                const randomIndex = Math.floor(Math.random() * characterPool.length);
+                guaranteedChars.push(characterPool.charAt(randomIndex));
+            }
+
+            // 3. Embaralha os caracteres (algoritmo Fisher-Yates)
+            for (let i = guaranteedChars.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [guaranteedChars[i], guaranteedChars[j]] = [guaranteedChars[j], guaranteedChars[i]];
+            }
+
+            newPassword = guaranteedChars.join('');
+            passwordDisplay.textContent = newPassword;
+        }
+
+        /**
+         * Copia a senha atual para a área de transferência.
+         */
+        function copyPassword() {
+            const password = passwordDisplay.textContent;
+
+            // Verifica se a senha é válida (não é a mensagem inicial ou de erro)
+            if (password === 'Clique em "Gerar"' || password.startsWith('ERRO:')) {
+                showMessage("Primeiro gere uma senha válida.", true);
+                return;
+            }
+
+            // Uso de document.execCommand('copy') por ser mais compatível em ambientes iframe
+            const tempInput = document.createElement('textarea');
+            tempInput.value = password;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showMessage("Senha copiada para a área de transferência!");
+                } else {
+                    showMessage("Falha ao copiar a senha.", true);
+                }
+            } catch (err) {
+                showMessage("Erro ao tentar copiar: " + err, true);
+            }
+            
+            document.body.removeChild(tempInput);
+        }
+
+        // --- Event Listeners ---
+        
+        // Atualiza o valor do comprimento ao mover o slider
+        lengthSlider.addEventListener('input', () => {
+            lengthValue.textContent = lengthSlider.value;
+        });
+
+        // Gera a senha ao clicar no botão
+        generateButton.addEventListener('click', generatePassword);
+        
+        // Copia a senha ao clicar no display ou no botão de cópia
+        copyButton.addEventListener('click', copyPassword);
+        passwordDisplay.addEventListener('click', copyPassword);
+
+        // Gera uma senha inicial ao carregar a página
+        window.onload = generatePassword;
+
+    </script>
+</body>
+</html>
