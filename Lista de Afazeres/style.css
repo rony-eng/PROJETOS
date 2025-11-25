@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fafc; /* Cor de fundo muito clara (quase branco) */
+        }
+        /* Estilo para a barra de rolagem para um visual mais limpo */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db; /* Cinza claro */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af; /* Cinza um pouco mais escuro */
+        }
+
+        /* Estilo para o item concluído */
+        .completed-item {
+            text-decoration: line-through;
+            color: #9ca3af; /* Cinza para itens concluídos */
+        }
