@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Lista Simples</title>
+    <!-- Carrega o Tailwind CSS para um design rápido e responsivo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Define a fonte Inter e algumas configurações padrão do Tailwind -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fafc; /* Cor de fundo muito clara (quase branco) */
+        }
+        /* Estilo para a barra de rolagem para um visual mais limpo */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db; /* Cinza claro */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af; /* Cinza um pouco mais escuro */
+        }
+
+        /* Estilo para o item concluído */
+        .completed-item {
+            text-decoration: line-through;
+            color: #9ca3af; /* Cinza para itens concluídos */
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 sm:p-8">
+
+    <div class="max-w-xl mx-auto bg-white shadow-xl rounded-xl p-6 sm:p-8 md:p-10 border border-gray-100">
+
+        <!-- Título principal -->
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-6 text-center">
+            Minhas Tarefas Simples
+        </h1>
+
+        <!-- Formulário para adicionar novos itens -->
+        <form id="task-form" class="flex flex-col sm:flex-row gap-3 mb-8">
+            <input
+                type="text"
+                id="new-task-input"
+                placeholder="Ex: Comprar pão, Agendar reunião..."
+                required
+                class="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 text-gray-800"
+            >
+            <button
+                type="submit"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-150 transform hover:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 w-full sm:w-auto"
+            >
+                Adicionar
+            </button>
+        </form>
+
+        <!-- Lista de Tarefas (Local onde os itens serão inseridos) -->
+        <ul id="task-list" class="space-y-3">
+            <!-- Os itens serão gerados aqui pelo JavaScript -->
+        </ul>
+
+        <!-- Botão para limpar tarefas concluídas -->
+        <div class="mt-8 text-center">
+            <button
+                id="clear-completed-btn"
+                class="text-sm text-gray-500 hover:text-red-600 transition duration-150 font-medium disabled:opacity-50"
+                disabled
+            >
+                Limpar Tarefas Concluídas
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        // Variáveis globais
+        const taskForm = document.getElementById('task-form');
+        const taskInput = document.getElementById('new-task-input');
+        const taskList = document.getElementById('task-list');
+        const clearCompletedBtn = document.getElementById('clear-completed-btn');
+
+        // Estrutura de dados para armazenar a lista (para persistência no localStorage)
+        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+        // --- Funções de Persistência ---
+
+        /**
+         * Salva o array de tarefas no LocalStorage.
+         */
+        function saveTasks() {
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+
+        /**
+         * Verifica se há tarefas concluídas para habilitar/desabilitar o botão de limpar.
+         */
+        function updateClearButtonState() {
+            const hasCompleted = tasks.some(task => task.completed);
+            clearCompletedBtn.disabled = !hasCompleted;
+        }
+
+        // --- Funções de Renderização e Eventos ---
+
+        /**
+         * Renderiza a lista de tarefas completa na tela.
+         */
+        function renderTasks() {
+            taskList.innerHTML = ''; // Limpa a lista atual
+
+            if (tasks.length === 0) {
+                // Mensagem para lista vazia
+                taskList.innerHTML = `<li class="text-center py-4 text-gray-500 italic">
+                                        Nenhuma tarefa! Adicione algo acima.
+                                      </li>`;
+            }
+
+            tasks.forEach((task, index) => {
+                // Cria o elemento da lista
+                const listItem = document.createElement('li');
+                listItem.className = `flex items-center justify-between p-3 border-b last:border-b-0 border-gray-200 bg-white rounded-lg transition duration-200 ease-in-out hover:bg-gray-50`;
+                
+                // Aplica a classe de conclusão se necessário
+                if (task.completed) {
+                    listItem.classList.add('completed-item-container');
+                }
+
+                // Conteúdo principal (texto da tarefa e checkbox)
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'flex items-center flex-grow min-w-0';
+
+                // Checkbox
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.checked = task.completed;
+                checkbox.className = 'form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer';
+                checkbox.addEventListener('change', () => toggleTaskCompleted(index));
+                
+                // Texto da tarefa
+                const textSpan = document.createElement('span');
+                textSpan.textContent = task.text;
+                textSpan.className = `ml-3 text-lg truncate min-w-0 ${task.completed ? 'completed-item' : 'text-gray-800'}`;
+
+                contentDiv.appendChild(checkbox);
+                contentDiv.appendChild(textSpan);
+
+                // Botão de deletar (X)
+                const deleteButton = document.createElement('button');
+                deleteButton.innerHTML = `
+                    <svg class="w-5 h-5 text-gray-400 hover:text-red-500 transition duration-150" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                `;
+                deleteButton.className = 'ml-4 p-1 rounded-full hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-150';
+                deleteButton.addEventListener('click', () => deleteTask(index));
+
+                // Monta o item da lista
+                listItem.appendChild(contentDiv);
+                listItem.appendChild(deleteButton);
+                taskList.appendChild(listItem);
+            });
+
+            updateClearButtonState();
+        }
+
+        /**
+         * Adiciona uma nova tarefa ao array.
+         * @param {string} text - O texto da nova tarefa.
+         */
+        function addTask(text) {
+            tasks.push({ text: text, completed: false });
+            saveTasks();
+            renderTasks();
+        }
+
+        /**
+         * Alterna o status de conclusão de uma tarefa.
+         * @param {number} index - O índice da tarefa.
+         */
+        function toggleTaskCompleted(index) {
+            tasks[index].completed = !tasks[index].completed;
+            saveTasks();
+            renderTasks();
+        }
+
+        /**
+         * Deleta uma tarefa pelo índice.
+         * @param {number} index - O índice da tarefa.
+         */
+        function deleteTask(index) {
+            tasks.splice(index, 1);
+            saveTasks();
+            renderTasks();
+        }
+
+        /**
+         * Remove todas as tarefas marcadas como concluídas.
+         */
+        function clearCompletedTasks() {
+            tasks = tasks.filter(task => !task.completed);
+            saveTasks();
+            renderTasks();
+        }
+
+        // --- Event Listeners ---
+
+        // Submissão do formulário
+        taskForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const text = taskInput.value.trim();
+            if (text) {
+                addTask(text);
+                taskInput.value = ''; // Limpa o input
+            }
+        });
+
+        // Clique no botão de limpar
+        clearCompletedBtn.addEventListener('click', clearCompletedTasks);
+
+        // --- Inicialização ---
+
+        // Carrega e renderiza a lista ao iniciar
+        renderTasks();
+    </script>
+
+</body>
+</html>
