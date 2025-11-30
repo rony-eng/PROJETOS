@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso ao Sistema</title>
+    <script src="/CAIXA MERCADO/Login/script.js"></script>
+    <!-- Carrega o Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configuração da fonte Inter (padrão) -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Fundo levemente cinza */
+        }
+        /* Cor de fundo baseada no painel escuro da imagem */
+        .dark-panel-bg {
+            background-color: #17213E; /* Azul escuro profundo */
+        }
+        /* Cor para o texto principal escuro do modal, baseado na cor do fundo do painel */
+        .dark-text-modal {
+            color: #17213E; /* Cor do painel escuro */
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <!-- Container Principal (Layout de duas colunas em telas grandes) -->
+    <div class="dark-panel-bg w-full max-w-5xl rounded-xl shadow-2xl flex flex-col lg:flex-row overflow-hidden">
+        
+        <!-- Painel de Login (Esquerda - Branco) -->
+        <div class="flex-1 bg-white p-8 sm:p-12 lg:p-16 flex flex-col justify-center">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Acesse Sua Conta</h1>
+            <p class="text-gray-500 mb-8">Insira seus dados para continuar.</p>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="mb-4">
+                    <label for="loginEmail" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input type="email" id="loginEmail" name="email" required 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150"
+                           placeholder="seu.email@exemplo.com">
+                </div>
+                <div class="mb-6">
+                    <label for="loginPassword" class="block text-sm font-medium text-gray-700 mb-2">Senha</label>
+                    <input type="password" id="loginPassword" name="password" required 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150"
+                           placeholder="••••••••">
+                </div>
+
+                <!-- Botão de Login (Azul primário) -->
+                <button type="submit" 
+                        class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition duration-200 shadow-md shadow-blue-500/50"
+                        onclick="acessar()">
+                    Entrar
+                </button>
+            </form>
+            
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">
+                    Não tem uma conta? 
+                    <!-- Botão de Cadastro (Amarelo secundário, semelhante ao 'Adicionar Variável' da imagem) -->
+                    <button id="openRegisterModal" onclick="toggleModal(true)" 
+                            class="text-amber-600 hover:text-amber-800 font-semibold transition duration-150 focus:outline-none">
+                        Cadastre-se
+                    </button>
+                </p>
+            </div>
+            <div id="messageBox" class="mt-4 p-3 bg-red-100 text-red-700 rounded-lg hidden" role="alert"></div>
+        </div>
+
+        <!-- Painel Lateral (Direita - Azul Escuro) -->
+        <div class="hidden lg:block lg:w-96 p-12 flex flex-col justify-between text-white">
+            <div>
+                <h2 class="text-2xl font-bold mb-4">Bem-vindo(a)</h2>
+                <p class="text-gray-300">
+                    Acesse o seu painel de controle para gerenciar suas operações. Rápido e intuitivo, como a tela de "Caixa Rápido" que inspirou este design.
+                </p>
+            </div>
+            <!-- Exemplo de citação ou logo estilizado -->
+            <div class="text-sm text-gray-400 mt-10">
+                <span class="text-amber-400 font-bold text-xl">&bull;</span> Sistema Integrado
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Cadastro (Pop-up) -->
+    <div id="registerModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50 hidden transition-opacity duration-300">
+        <!-- Alteração: Fundo do modal agora é branco para melhor contraste com o texto escuro -->
+        <div class="bg-white w-full max-w-md p-8 rounded-xl shadow-2xl transform scale-95 transition-all duration-300">
+            <!-- Alteração: Título com a cor escura do painel (dark-text-modal) -->
+            <h2 class="text-2xl font-bold mb-6 text-center dark-text-modal">Cadastro de Novo Usuário</h2>
+            <form id="registerForm" onsubmit="handleRegistration(event)">
+                <div class="mb-4">
+                    <!-- Alteração: Label com text-gray-700 (mais escuro que text-gray-300) -->
+                    <label for="regName" class="block text-sm font-medium text-gray-700 mb-2">Nome Completo</label>
+                    <input type="text" id="regName" required 
+                           class="w-full px-4 py-3 border border-gray-300 bg-white text-gray-800 rounded-lg focus:ring-amber-500 focus:border-amber-500">
+                </div>
+                <div class="mb-4">
+                    <!-- Alteração: Label com text-gray-700 (mais escuro que text-gray-300) -->
+                    <label for="regEmail" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input type="email" id="regEmail" required 
+                           class="w-full px-4 py-3 border border-gray-300 bg-white text-gray-800 rounded-lg focus:ring-amber-500 focus:border-amber-500"
+                           placeholder="seu.email@exemplo.com">
+                </div>
+                <div class="mb-6">
+                    <!-- Alteração: Label com text-gray-700 (mais escuro que text-gray-300) -->
+                    <label for="regPassword" class="block text-sm font-medium text-gray-700 mb-2">Senha</label>
+                    <input type="password" id="regPassword" required 
+                           class="w-full px-4 py-3 border border-gray-300 bg-white text-gray-800 rounded-lg focus:ring-amber-500 focus:border-amber-500"
+                           placeholder="Mínimo 6 caracteres">
+                </div>
+
+                <!-- Botão de Cadastro (Amarelo vibrante) -->
+                <button type="submit" 
+                        class="w-full bg-amber-500 hover:bg-amber-600 text-gray-900 font-semibold py-3 rounded-lg transition duration-200 shadow-lg shadow-amber-500/50">
+                    Cadastrar
+                </button>
+            </form>
+            
+            <div class="mt-4 text-center">
+                <button type="button" onclick="toggleModal(false)" 
+                        class="text-gray-500 hover:text-gray-700 text-sm mt-3 transition duration-150">
+                    Cancelar e Voltar
+                </button>
+            </div>
+            <!-- Alteração: Cor da caixa de mensagem para fundo branco/texto escuro (padrão) -->
+            <div id="registerMessageBox" class="mt-4 p-3 bg-red-100 text-red-700 rounded-lg hidden" role="alert"></div>
+        </div>
+    </div>
+
+    <!-- Script para Firebase e Lógica da Aplicação -->
+    <script type="module">
+        // Importações do Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, setPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        // Ativar o modo debug para o Firestore
+        setLogLevel('debug');
+
+        // Variáveis globais (fornecidas pelo ambiente)
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-login-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        
+        let db;
+        let auth;
+        let userId = null;
+        
+        const messageBox = document.getElementById('messageBox');
+        const registerMessageBox = document.getElementById('registerMessageBox');
+
+        /**
+         * Exibe uma mensagem na caixa de feedback.
+         * @param {string} msg A mensagem a ser exibida.
+         * @param {HTMLElement} box O elemento da caixa de mensagem.
+         * @param {string} type O tipo de mensagem ('success', 'error', 'info').
+         */
+        function showMessage(msg, box, type = 'info') {
+            box.textContent = msg;
+            box.className = 'mt-4 p-3 rounded-lg transition-all duration-300';
+            box.classList.remove('hidden');
+
+            // Define classes de cor
+            if (type === 'success') {
+                box.classList.add('bg-green-100', 'text-green-700');
+            } else if (type === 'error') {
+                box.classList.add('bg-red-100', 'text-red-700');
+            } else {
+                box.classList.add('bg-blue-100', 'text-blue-700');
+            }
+
+            // Remove a mensagem após 5 segundos
+            setTimeout(() => {
+                box.classList.add('hidden');
+            }, 5000);
+        }
+
+        // 1. Inicialização do Firebase e Autenticação
+        async function initializeFirebase() {
+            if (!firebaseConfig) {
+                console.error("Firebase config não está disponível.");
+                showMessage("Erro: Configuração do Firebase não encontrada. O salvamento não funcionará.", messageBox, 'error');
+                return;
+            }
+
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                
+                // Define a persistência para sessão (opcional, mas boa prática)
+                await setPersistence(auth, browserSessionPersistence);
+
+                if (initialAuthToken) {
+                    // Tenta autenticar com o token personalizado
+                    const userCredential = await signInWithCustomToken(auth, initialAuthToken);
+                    userId = userCredential.user.uid;
+                    console.log("Autenticado com token customizado. UID:", userId);
+                } else {
+                    // Se não houver token, autentica anonimamente
+                    const userCredential = await signInAnonymously(auth);
+                    userId = userCredential.user.uid;
+                    console.log("Autenticado anonimamente. UID:", userId);
+                }
+            } catch (error) {
+                console.error("Erro na inicialização ou autenticação do Firebase:", error);
+                showMessage(`Erro de autenticação: ${error.message}`, messageBox, 'error');
+            }
+        }
+        
+        // Chamada de inicialização
+        initializeFirebase();
+
+        // 2. Lógica do Modal
+        window.toggleModal = (show) => {
+            const modal = document.getElementById('registerModal');
+            if (show) {
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.style.opacity = 1;
+                    modal.querySelector('.transform').classList.remove('scale-95');
+                }, 10);
+            } else {
+                modal.style.opacity = 0;
+                modal.querySelector('.transform').classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 300); // Deve corresponder à duração da transição CSS
+            }
+        };
+
+        // 3. Função de Cadastro e Salvamento no Firestore
+        window.handleRegistration = async (event) => {
+            event.preventDefault();
+            
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            
+            if (!db || !userId) {
+                showMessage("Erro: O sistema não está pronto para salvar dados. Tente novamente.", registerMessageBox, 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showMessage("A senha deve ter no mínimo 6 caracteres.", registerMessageBox, 'error');
+                return;
+            }
+
+            const registrationData = {
+                name: name,
+                email: email,
+                // Nota: Em um aplicativo real, a senha NÃO deve ser salva em texto simples.
+                // Ela seria hasheada e salva em um sistema de autenticação seguro.
+                // Aqui, salvamos como demonstração de persistência de dados.
+                password_demo: password, 
+                createdAt: new Date().toISOString(),
+                // Adicionamos o appId para referência, embora já esteja no path
+                appId: appId 
+            };
+            
+            try {
+                // Caminho da coleção privada: /artifacts/{appId}/users/{userId}/registrations
+                const userRegistrationsPath = `/artifacts/${appId}/users/${userId}/registrations`;
+                
+                const docRef = await addDoc(collection(db, userRegistrationsPath), registrationData);
+                
+                showMessage("Cadastro realizado com sucesso! Dados salvos no Firestore.", registerMessageBox, 'success');
+                console.log("Documento de cadastro salvo com ID: ", docRef.id);
+
+                // Limpa o formulário após o sucesso
+                document.getElementById('registerForm').reset();
+                
+                // Fecha o modal após um pequeno atraso
+                setTimeout(() => toggleModal(false), 2000);
+
+            } catch (e) {
+                console.error("Erro ao adicionar documento: ", e);
+                showMessage(`Erro ao cadastrar: ${e.message}`, registerMessageBox, 'error');
+            }
+        };
+
+        // 4. Função de Login (Apenas placeholder)
+        window.handleLogin = (event) => {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            // Esta é apenas uma simulação, conforme solicitado, sem validação real.
+            showMessage(`Tentativa de Login (Simulado): Email: ${email}`, messageBox, 'info');
+
+            // Em um sistema real, aqui você chamaria: 
+            // signInWithEmailAndPassword(auth, email, password);
+        };
+
+    </script>
+</body>
+</html>
