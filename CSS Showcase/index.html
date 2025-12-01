@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Showcase de CSS Interativo</title>
+    <!-- Incluindo Tailwind CSS para estilização moderna e responsiva -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5; /* indigo-600 */
+        }
+        /* Configuração de fonte padrão */
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Estilos do modo claro */
+        body {
+            background-color: #f3f4f6; /* gray-100 */
+            color: #1f2937; /* gray-800 */
+        }
+        .bg-card {
+            background-color: #ffffff;
+            border-color: #e5e7eb;
+        }
+
+        /* Estilos do modo escuro */
+        .dark body {
+            background-color: #111827; /* gray-900 */
+            color: #f3f4f6; /* gray-50 */
+        }
+        .dark .bg-card {
+            background-color: #1f2937; /* gray-800 */
+            border-color: #374151;
+        }
+        .dark .bg-card-alt {
+             background-color: #374151; /* gray-700 */
+        }
+
+
+        /* Estilo específico para o bloco de código */
+        pre {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            font-size: 0.875rem; /* sm */
+        }
+
+        /* Animação de Rotação */
+        @keyframes rotate360 {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .rotate-animation {
+            animation: rotate360 4s linear infinite;
+        }
+
+        /* Estilo para o Efeito 3D */
+        .card-3d-container {
+            perspective: 1000px;
+        }
+        .card-3d {
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+        .card-3d:hover {
+            transform: rotateY(20deg) rotateX(10deg) translateZ(50px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Estilo para o Tooltip (CSS Puro) */
+        .tooltip-container {
+            position: relative;
+            display: inline-block;
+        }
+        .tooltip-text {
+            visibility: hidden;
+            width: 140px;
+            background-color: var(--primary-color);
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 10;
+            bottom: 150%;
+            left: 50%;
+            margin-left: -70px;
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--primary-color) transparent transparent transparent;
+        }
+        .tooltip-container:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        /* Estilo para Glassmorphism */
+        .glass-card {
+            background-color: rgba(255, 255, 255, 0.2); /* Semi-transparente */
+            backdrop-filter: blur(10px); /* Efeito de desfoque */
+            -webkit-backdrop-filter: blur(10px); /* Suporte para Webkit */
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+        }
+        .dark .glass-card {
+            background-color: rgba(31, 41, 55, 0.4); /* Dark semi-transparent */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Estilo para Zoom na Imagem */
+        .zoom-container {
+            overflow: hidden;
+        }
+        .zoom-image {
+            transition: transform 0.4s ease-in-out;
+        }
+        .zoom-container:hover .zoom-image {
+            transform: scale(1.1);
+        }
+
+        /* Estilo para Overlay */
+        .overlay-content {
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+        }
+        .zoom-container:hover .overlay-content {
+            opacity: 1;
+        }
+
+    </style>
+</head>
+<body class="transition-colors duration-500">
+
+    <!-- Modal (Oculto por padrão, controlado por JS) -->
+    <div id="cssModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+        <div class="bg-card border p-6 w-full max-w-lg rounded-xl shadow-2xl transform transition-transform duration-300 scale-95 opacity-0" id="modalContent">
+            <h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-100">Pop-up/Modal (Simulado)</h3>
+            <p class="mb-4 text-gray-600 dark:text-gray-300">Este é um modal simples estilizado inteiramente com CSS e controlado por uma classe JavaScript para fins de demonstração.</p>
+            <button onclick="closeModal()" class="w-full px-4 py-2 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition">Fechar</button>
+        </div>
+    </div>
+
+    <!-- Layout Principal: Sidebar (3/12) e Conteúdo (9/12) -->
+    <div class="flex h-screen overflow-hidden">
+        
+        <!-- Sidebar de Navegação -->
+        <nav class="w-full md:w-3/12 lg:w-2/12 p-4 bg-card border-r border-gray-200 dark:border-gray-700 overflow-y-auto transition-colors duration-500">
+            <h1 class="text-2xl font-bold mb-6 text-indigo-600 dark:text-indigo-400">CSS Showcase</h1>
+            
+            <!-- Botão de Alternar Tema (Sempre visível) -->
+            <button onclick="toggleDarkMode()" id="darkModeToggle" class="w-full mb-4 px-4 py-2 text-center rounded-lg font-semibold transition shadow-md bg-indigo-500 text-white hover:bg-indigo-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-100">
+                Alternar para <span id="modeText">Escuro</span>
+            </button>
+
+            <h2 class="text-lg font-semibold mb-3 border-b pb-2 border-gray-200 dark:border-gray-700">Funcionalidades</h2>
+            
+            <div id="featureButtons">
+                <!-- Os botões serão adicionados aqui pelo JavaScript -->
+            </div>
+        </nav>
+
+        <!-- Conteúdo Principal e Demonstração -->
+        <main class="flex-1 p-6 md:p-10 overflow-y-auto">
+            <h2 class="text-3xl font-extrabold mb-4" id="featureTitle">Bem-vindo(a) ao Showcase de CSS</h2>
+            <p class="text-gray-600 dark:text-gray-300 mb-8 max-w-3xl" id="featureDescription">
+                Selecione uma funcionalidade na barra lateral para ver a demonstração e o código correspondente. As funcionalidades aqui apresentadas demonstram o poder do CSS, algumas com um pequeno auxílio de JavaScript para interação.
+            </p>
+
+            <!-- Área de Demonstração -->
+            <div class="mb-10 p-6 bg-card border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg min-h-[200px] flex items-center justify-center transition-all duration-500" id="demoArea">
+                <p class="text-xl text-gray-400">Aguardando seleção...</p>
+            </div>
+
+            <!-- Área de Código -->
+            <div class="space-y-4">
+                <h3 class="text-2xl font-bold border-b pb-2 text-indigo-600 dark:text-indigo-400">Código da Funcionalidade</h3>
+                
+                <div class="bg-gray-800 dark:bg-gray-900 rounded-lg text-white">
+                    <div class="p-3 bg-gray-700 dark:bg-gray-800 rounded-t-lg font-mono text-sm border-b border-gray-600">HTML</div>
+                    <div id="codeHtml" class="code-block bg-gray-800 dark:bg-gray-900 rounded-b-lg">
+                        <pre class="language-html">Selecione uma funcionalidade para ver o código HTML.</pre>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 dark:bg-gray-900 rounded-lg text-white">
+                    <div class="p-3 bg-gray-700 dark:bg-gray-800 rounded-t-lg font-mono text-sm border-b border-gray-600">CSS (Estilo)</div>
+                    <div id="codeCss" class="code-block bg-gray-800 dark:bg-gray-900 rounded-b-lg">
+                        <pre class="language-css">Selecione uma funcionalidade para ver o código CSS.</pre>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 dark:bg-gray-900 rounded-lg text-white" id="jsCodeContainer">
+                    <div class="p-3 bg-gray-700 dark:bg-gray-800 rounded-t-lg font-mono text-sm border-b border-gray-600">JavaScript (para Interação)</div>
+                    <div id="codeJs" class="code-block bg-gray-800 dark:bg-gray-900 rounded-b-lg">
+                        <pre class="language-javascript">Algumas funcionalidades interativas usam um pequeno script para manipulação de classes.</pre>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <script>
+        // Variável global para armazenar as funcionalidades e seus códigos
+        const features = [
+            {
+                id: 'dark-mode',
+                name: 'Modo Noturno (Toggle)',
+                description: 'Demonstra como alternar entre temas claro e escuro. Neste exemplo, usamos a classe "dark" no elemento <html> (com Tailwind CSS) para aplicar estilos diferentes. Um script JavaScript simples gerencia a classe.',
+                demoHtml: `
+                    <div class="p-6 rounded-xl transition-colors duration-500 shadow-xl bg-gray-200 dark:bg-gray-700 border border-gray-300 dark:border-gray-600">
+                        <p class="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-100">Tema Atual: <span id="currentModeText">Claro</span></p>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">Esta caixa de demonstração reflete as mudanças do tema.</p>
+                    </div>
+                `,
+                codeHtml: `<pre>&lt;!-- Botão na sidebar: --&gt;
+&lt;button onclick="toggleDarkMode()"&gt;Alternar Tema&lt;/button&gt;
+&lt;!-- A classe 'dark' será adicionada ao &lt;html&gt; --&gt;
+&lt;html class="dark"&gt;...&lt;/html&gt;</pre>`,
+                codeCss: `<pre>/* No CSS puro, você definiria: */
+body { background: white; color: black; }
+.dark body { background: black; color: white; }
+
+/* Com Tailwind, usamos classes utilitárias: */
+/* class="bg-gray-900 dark:bg-gray-100" */
+/* onde 'dark:' aplica o estilo quando a classe 'dark' está presente no html. */</pre>`,
+                codeJs: `<pre>function toggleDarkMode() {
+    const htmlElement = document.documentElement;
+    htmlElement.classList.toggle('dark');
+    // Armazena a preferência para persistência (não implementado aqui, mas é a prática ideal)
+    const isDark = htmlElement.classList.contains('dark');
+    document.getElementById('modeText').textContent = isDark ? 'Claro' : 'Escuro';
+    document.getElementById('currentModeText').textContent = isDark ? 'Escuro' : 'Claro';
+}</pre>`
+            },
+            {
+                id: 'modal',
+                name: 'Pop-up/Modal (JS + CSS)',
+                description: 'Cria uma janela modal centralizada que cobre a tela. O CSS se encarrega da aparência e das animações de transição, enquanto o JavaScript é usado para adicionar/remover a classe que o torna visível (simulando um botão de abertura).',
+                demoHtml: `
+                    <button onclick="openModal()" class="px-6 py-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition shadow-lg">Abrir Modal de Exemplo</button>
+                `,
+                codeHtml: `<pre>&lt;!-- A estrutura do modal fica oculta no HTML --&gt;
+&lt;div id="cssModal" class="hidden"&gt;
+    &lt;div id="modalContent"&gt;
+        &lt;h3&gt;Título do Modal&lt;/h3&gt;
+        &lt;button onclick="closeModal()"&gt;Fechar&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>`,
+                codeCss: `<pre>/* Define o modal para cobrir a tela (posiçao fixa) */
+#cssModal {
+    /* ... classes para opacidade/fundo (bg-opacity-50) */
+    display: flex; /* Para centralizar o conteúdo */
+}
+
+/* Define a animação do conteúdo do modal (transform) */
+#modalContent {
+    transition: transform 0.3s, opacity 0.3s;
+    transform: scale(0.95); /* Começa um pouco menor */
+    opacity: 0;
+}
+
+/* Classe que o JS adiciona/remove para mostrar */
+#cssModal.active #modalContent {
+    transform: scale(1); /* Escala para o tamanho normal */
+    opacity: 1;
+}</pre>`,
+                codeJs: `<pre>function openModal() {
+    const modal = document.getElementById('cssModal');
+    const content = document.getElementById('modalContent');
+    modal.classList.remove('hidden');
+    // Força o repaint para garantir a transição
+    setTimeout(() => {
+        modal.classList.add('active');
+        content.classList.add('active');
+    }, 10); 
+}
+
+function closeModal() {
+    const modal = document.getElementById('cssModal');
+    const content = document.getElementById('modalContent');
+    content.classList.remove('active');
+    // Esconde o modal após a transição
+    setTimeout(() => {
+        modal.classList.add('hidden');
+    }, 300); 
+}</pre>`
+            },
+            {
+                id: 'tooltip',
+                name: 'Efeito Tooltip (Hover Puro CSS)',
+                description: 'Um Tooltip (dica de ferramenta) que aparece ao passar o mouse. O CSS puro usa as propriedades `:hover` e `visibility`/`opacity` para controlar o aparecimento e o desaparecimento, incluindo o pequeno triângulo (`::after`).',
+                demoHtml: `
+                    <div class="tooltip-container">
+                        <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition shadow-md">Passe o mouse aqui</button>
+                        <span class="tooltip-text">Eu sou um Tooltip em CSS!</span>
+                    </div>
+                `,
+                codeHtml: `<pre>&lt;div class="tooltip-container"&gt;
+    &lt;button&gt;Passe o mouse aqui&lt;/button&gt;
+    &lt;span class="tooltip-text"&gt;Tooltip em CSS!&lt;/span&gt;
+&lt;/div&gt;</pre>`,
+                codeCss: `<pre>/* O contêiner pai deve ter position: relative */
+.tooltip-container { position: relative; }
+
+/* O texto do tooltip fica invisível e posicionado */
+.tooltip-text {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s;
+    position: absolute;
+    bottom: 150%;
+    /* ... outros estilos de fundo, borda, etc. */
+}
+
+/* Mostra o tooltip ao passar o mouse no contêiner */
+.tooltip-container:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* O triângulo é criado com o pseudo-elemento ::after */
+.tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    border-style: solid;
+    border-color: var(--primary-color) transparent transparent transparent;
+}</pre>`,
+                codeJs: `<pre>// Nenhum JavaScript necessário para esta funcionalidade, pois é puramente CSS e :hover.</pre>`
+            },
+            {
+                id: 'animation',
+                name: 'Animação de Rotação (Keyframes)',
+                description: 'Demonstra uma animação contínua e infinita usando `@keyframes`. Essa é a maneira fundamental de criar movimento complexo e fluido diretamente no CSS.',
+                demoHtml: `
+                    <div class="rotate-animation w-24 h-24 rounded-full bg-blue-500 flex items-center justify-center shadow-2xl">
+                        <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H6a1 1 0 010 2H3a1 1 0 01-1-1V3a1 1 0 011-1zm14 15a1 1 0 01-1 1h-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 111.885-.666A5.002 5.002 0 0014.001 13H14a1 1 0 010-2h3a1 1 0 011 1v5z" clip-rule="evenodd"></path></svg>
+                    </div>
+                `,
+                codeHtml: `<pre>&lt;div class="rotate-animation"&gt;
+    &lt;svg&gt;...&lt;/svg&gt;
+&lt;/div&gt;</pre>`,
+                codeCss: `<pre>/* Define os passos da animação */
+@keyframes rotate360 {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Aplica a animação ao elemento */
+.rotate-animation {
+    animation: rotate360 4s linear infinite;
+    /* nome, duração, tipo de curva, repetição */
+}</pre>`,
+                codeJs: `<pre>// Nenhum JavaScript necessário. A animação é controlada apenas pelo CSS keyframes.</pre>`
+            },
+            {
+                id: '3d-card',
+                name: 'Efeito Cartão 3D (Transform)',
+                description: 'Simula um efeito de profundidade e rotação 3D em um cartão ao passar o mouse. Isso é feito usando a propriedade `perspective` no elemento pai e `transform-style: preserve-3d` e `transform` no elemento filho.',
+                demoHtml: `
+                    <div class="card-3d-container w-64 h-40">
+                        <div class="card-3d bg-card-alt p-6 rounded-xl shadow-xl border border-gray-500 dark:border-gray-600 flex flex-col justify-center items-center h-full">
+                            <p class="font-bold text-lg">Passe o mouse!</p>
+                            <p class="text-sm">Veja a profundidade.</p>
+                        </div>
+                    </div>
+                `,
+                codeHtml: `<pre>&lt;div class="card-3d-container"&gt;
+    &lt;div class="card-3d"&gt;
+        &lt;p&gt;Passe o mouse!&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>`,
+                codeCss: `<pre>/* O pai define a perspectiva do observador */
+.card-3d-container { perspective: 1000px; }
+
+/* O filho habilita a manipulação 3D */
+.card-3d {
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+/* O efeito 3D ao passar o mouse */
+.card-3d:hover {
+    /* Rotação nos eixos Y e X, e deslocamento para frente (Z) */
+    transform: rotateY(20deg) rotateX(10deg) translateZ(50px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+}</pre>`,
+                codeJs: `<pre>// Nenhum JavaScript necessário, pois o evento :hover do CSS é usado para o efeito.</pre>`
+            },
+            // NOVAS FUNCIONALIDADES ADICIONADAS ABAIXO
+            {
+                id: 'glassmorphism',
+                name: 'Efeito Glassmorphism (Blur)',
+                description: 'Cria o popular efeito "vidro fosco" usando a propriedade CSS `backdrop-filter: blur()`. A transparência e a borda suave completam a ilusão. Requer um fundo visível para o desfoque.',
+                demoHtml: `
+                    <div class="relative w-72 h-40 rounded-xl overflow-hidden shadow-2xl">
+                        <!-- Background para o blur -->
+                        <img src="https://placehold.co/400x250/818CF8/ffffff?text=Fundo" class="absolute inset-0 w-full h-full object-cover" alt="Background para o Glassmorphism">
+                        <!-- Card Glassmorphism -->
+                        <div class="glass-card absolute inset-4 p-4 rounded-xl flex items-center justify-center">
+                            <p class="font-bold text-xl text-gray-900 dark:text-gray-100">Card de Vidro</p>
+                        </div>
+                    </div>
+                `,
+                codeHtml: `<pre>&lt;div class="background-com-imagem"&gt;
+    &lt;img src="fundo.jpg"&gt;
+    &lt;div class="glass-card"&gt;
+        &lt;p&gt;Card de Vidro&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>`,
+                codeCss: `<pre>/* Estilo essencial para o efeito Glass */
+.glass-card {
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); /* Compatibilidade */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+}</pre>`,
+                codeJs: `<pre>// Nenhum JavaScript necessário.</pre>`
+            },
+            {
+                id: 'image-zoom',
+                name: 'Zoom e Overlay em Imagem (Hover)',
+                description: 'Cria um efeito de zoom suave na imagem e revela uma sobreposição de texto ao passar o mouse. Utiliza `overflow: hidden` no contêiner e `transform: scale()` com `transition` na imagem, tudo controlado pelo seletor `:hover`.',
+                demoHtml: `
+                    <div class="zoom-container w-64 h-40 rounded-xl shadow-lg relative cursor-pointer">
+                        <img src="https://placehold.co/400x250/3b82f6/ffffff?text=FOTO" class="zoom-image w-full h-full object-cover" alt="Imagem com zoom">
+                        <div class="overlay-content absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                            <p class="text-white text-lg font-bold">Ver Detalhes (Hover)</p>
+                        </div>
+                    </div>
+                `,
+                codeHtml: `<pre>&lt;div class="zoom-container"&gt;
+    &lt;img class="zoom-image" src="..."&gt;
+    &lt;div class="overlay-content"&gt;Detalhes&lt;/div&gt;
+&lt;/div&gt;</pre>`,
+                codeCss: `<pre>/* Esconde o que sai do limite do contêiner */
+.zoom-container { overflow: hidden; }
+
+/* Transição de zoom na imagem */
+.zoom-image { transition: transform 0.4s; }
+.zoom-container:hover .zoom-image { transform: scale(1.1); }
+
+/* Transição de opacidade no overlay */
+.overlay-content { opacity: 0; transition: opacity 0.4s; }
+.zoom-container:hover .overlay-content { opacity: 1; }</pre>`,
+                codeJs: `<pre>// Nenhum JavaScript necessário.</pre>`
+            }
+        ];
+
+        // Referências DOM
+        const featureButtonsContainer = document.getElementById('featureButtons');
+        const demoArea = document.getElementById('demoArea');
+        const featureTitle = document.getElementById('featureTitle');
+        const featureDescription = document.getElementById('featureDescription');
+        const codeHtml = document.getElementById('codeHtml');
+        const codeCss = document.getElementById('codeCss');
+        const codeJs = document.getElementById('codeJs');
+        const jsCodeContainer = document.getElementById('jsCodeContainer');
+        const modeText = document.getElementById('modeText');
+
+        // Inicializa os botões e os handlers
+        function initializeButtons() {
+            // Limpa o contêiner de botões antes de preencher
+            featureButtonsContainer.innerHTML = ''; 
+            features.forEach(feature => {
+                const button = document.createElement('button');
+                button.textContent = feature.name;
+                button.className = 'feature-button w-full px-4 py-2 mb-2 text-left rounded-lg transition font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500';
+                button.setAttribute('data-id', feature.id);
+                button.onclick = () => showFeature(feature.id);
+                featureButtonsContainer.appendChild(button);
+            });
+        }
+
+        // Função para mostrar a funcionalidade selecionada
+        function showFeature(id) {
+            const feature = features.find(f => f.id === id);
+            if (!feature) return;
+
+            // 1. Atualiza o conteúdo principal
+            featureTitle.textContent = feature.name;
+            featureDescription.textContent = feature.description;
+            demoArea.innerHTML = feature.demoHtml;
+
+            // 2. Atualiza os blocos de código
+            codeHtml.innerHTML = feature.codeHtml;
+            codeCss.innerHTML = feature.codeCss;
+            codeJs.innerHTML = feature.codeJs;
+
+            // 3. Mostra/Oculta o bloco JS se for relevante
+            if (feature.codeJs.includes('Nenhum JavaScript necessário') || feature.codeJs.includes('// Nenhum JavaScript necessário')) {
+                jsCodeContainer.classList.add('hidden');
+            } else {
+                jsCodeContainer.classList.remove('hidden');
+            }
+
+            // 4. Estiliza o botão ativo
+            document.querySelectorAll('.feature-button').forEach(btn => {
+                btn.classList.remove('bg-indigo-100', 'dark:bg-indigo-900', 'text-indigo-800', 'dark:text-indigo-100');
+                btn.classList.add('text-gray-700', 'dark:text-gray-200');
+            });
+
+            const activeBtn = document.querySelector(`[data-id="${id}"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-indigo-100', 'dark:bg-indigo-900', 'text-indigo-800', 'dark:text-indigo-100');
+                activeBtn.classList.remove('text-gray-700', 'dark:text-gray-200');
+            }
+
+            // 5. Garante que o modo noturno esteja sincronizado se for o tema.
+            if (id === 'dark-mode') {
+                updateDarkModeText();
+            }
+        }
+
+        // Função de Alternar Modo Noturno (Usada pelo botão principal e pela demonstração)
+        function toggleDarkMode() {
+            const htmlElement = document.documentElement;
+            htmlElement.classList.toggle('dark');
+            updateDarkModeText();
+        }
+
+        // Função para atualizar o texto do botão/demo de modo noturno
+        function updateDarkModeText() {
+            const isDark = document.documentElement.classList.contains('dark');
+            modeText.textContent = isDark ? 'Claro' : 'Escuro';
+            
+            const currentModeTextElement = document.getElementById('currentModeText');
+            if (currentModeTextElement) {
+                 currentModeTextElement.textContent = isDark ? 'Escuro' : 'Claro';
+            }
+        }
+
+        // Funções para o Modal (precisam estar no escopo global para o onclick)
+        function openModal() {
+            const modal = document.getElementById('cssModal');
+            const content = document.getElementById('modalContent');
+            modal.classList.remove('hidden');
+            // Timeout para garantir que o CSS aplique o display:flex antes de iniciar a transição
+            setTimeout(() => {
+                modal.classList.add('active');
+                content.classList.add('active');
+                content.classList.remove('scale-95', 'opacity-0');
+            }, 10); 
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('cssModal');
+            const content = document.getElementById('modalContent');
+            content.classList.add('scale-95', 'opacity-0');
+            content.classList.remove('active');
+            // Esconde o modal após a transição (0.3s)
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('active');
+            }, 300); 
+        }
+
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeButtons();
+            // Mostra a primeira funcionalidade por padrão
+            showFeature('dark-mode');
+            // Configura o estado inicial do texto do modo noturno
+            updateDarkModeText();
+
+            // Adiciona listener para fechar o modal clicando no backdrop
+            document.getElementById('cssModal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('cssModal')) {
+                    closeModal();
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
