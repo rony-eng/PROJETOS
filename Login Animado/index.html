@@ -29,218 +29,213 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #F3F4F6; /* Cor de fundo suave */
+            background-color: #F3F4F6;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            /* Garante que o cartão tenha espaço nas laterais em telas pequenas */
             padding: 1rem; 
-        }
-
-        /* Container principal para a animação de deslizamento */
-        .form-container-wrapper {
-            /* 200% de largura para acomodar Login e Cadastro lado a lado */
-            width: 200%; 
-            transition: transform 0.6s ease-in-out;
-            display: flex;
         }
 
         /* Estilos para a div do cartão principal */
         .auth-card {
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            overflow: hidden; /* Garante que o conteúdo que desliza não seja visível */
+            overflow: hidden; 
+            min-height: 500px;
+            /* Usamos grid para garantir que os painéis internos ocupem 50% cada */
+            display: grid; 
+            grid-template-columns: 1fr 1fr;
+            position: relative; /* Base para os painéis absolutos */
         }
 
         /* Estilo base para cada painel (Login e Cadastro) */
         .form-panel {
-            width: 50%; /* Cada painel ocupa metade dos 200% do wrapper */
-            flex-shrink: 0;
-            padding: 2.5rem; /* p-10 */
+            padding: 2.5rem; 
+            background-color: white;
+            /* Garantir que todos os painéis internos tenham a mesma altura do cartão */
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 50%;
         }
 
-        /* Estilo para a animação de entrada do conteúdo de boas-vindas */
+        /* Estilo para o painel azul (Overlay) que se move */
         .overlay-panel {
             transition: transform 0.6s ease-in-out;
-        }
-
-        /* Estado ativo: move o wrapper para a esquerda e o painel de boas-vindas para a direita */
-        .active .form-container-wrapper {
-            transform: translateX(-50%);
-        }
-
-        /* No estado ativo, o overlay desliza 100% para a esquerda */
-        .active .overlay-panel {
-            transform: translateX(-100%); 
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 50%;
         }
     </style>
 </head>
 <body class="bg-light-gray-bg">
 
-    <!-- Card Principal: w-full e max-w-5xl para ser responsivo e centralizado -->
-    <div id="authCard" class="auth-card bg-white rounded-xl max-w-5xl w-full mx-auto flex relative">
+    <!-- Card Principal: w-full e max-w-5xl -->
+    <div id="authCard" class="auth-card rounded-xl max-w-5xl w-full mx-auto">
         
-        <!-- Painel de Formulários (w-1/2 para manter 50% fixo em todas as telas) -->
-        <!-- O overflow-hidden é crucial para esconder o conteúdo de 200% antes do slide -->
-        <div class="w-1/2 relative overflow-hidden">
+        <!-- 1. FORMULÁRIO DE LOGIN (Fixo na esquerda - z-index mais baixo) -->
+        <div id="loginPanel" class="form-panel left-0 z-20"> 
+            <h2 class="text-3xl font-bold mb-2 text-dark-navy">Acesse Sua Conta</h2>
+            <p class="text-gray-500 mb-8">Insira seus dados para continuar.</p>
             
-            <div id="formWrapper" class="form-container-wrapper">
+            <form onsubmit="event.preventDefault()">
+                <!-- Campos -->
+                <div class="mb-4">
+                    <label for="login-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" id="login-email" placeholder="seu.email@exemplo.com"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary-blue focus:border-primary-blue"
+                        required>
+                </div>
                 
-                <!-- 1. FORMULÁRIO DE LOGIN (Fica na direita lógica) -->
-                <div class="form-panel">
-                    <h2 class="text-3xl font-bold mb-2 text-dark-navy">Acesse Sua Conta</h2>
-                    <p class="text-gray-500 mb-8">Insira seus dados para continuar.</p>
-                    
-                    <form onsubmit="event.preventDefault()">
-                        <!-- Campo Email -->
-                        <div class="mb-4">
-                            <label for="login-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                            <input type="email" id="login-email" placeholder="seu.email@exemplo.com"
-                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary-blue focus:border-primary-blue"
-                                required>
-                        </div>
-                        
-                        <!-- Campo Senha -->
-                        <div class="mb-6">
-                            <label for="login-senha" class="block text-sm font-medium text-gray-700 mb-1">Senha</label>
-                            <input type="password" id="login-senha" placeholder="********"
-                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary-blue focus:border-primary-blue"
-                                required>
-                        </div>
-                        
-                        <!-- Botão Entrar -->
-                        <button type="submit"
-                            class="w-full bg-primary-blue text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-150">
-                            Entrar
-                        </button>
-                    </form>
+                <div class="mb-6">
+                    <label for="login-senha" class="block text-sm font-medium text-gray-700 mb-1">Senha</label>
+                    <input type="password" id="login-senha" placeholder="********"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary-blue focus:border-primary-blue"
+                        required>
+                </div>
+                
+                <!-- Botão Entrar -->
+                <button type="submit"
+                    class="w-full bg-primary-blue text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-150">
+                    Entrar
+                </button>
+            </form>
 
-                    <!-- Link para Cadastro -->
-                    <p class="mt-6 text-center text-sm text-gray-600">
-                        Não tem uma conta?
-                        <a href="#" id="toRegister" class="text-primary-blue hover:text-blue-700 font-semibold transition duration-150" onclick="togglePanel(true)">
-                            Cadastre-se
-                        </a>
-                    </p>
+            <!-- Link para Cadastro (Este botão será coberto pelo painel azul) -->
+            <p class="mt-6 text-center text-sm text-gray-600">
+                Não tem uma conta?
+                <a href="#" id="toRegister" class="text-primary-blue hover:text-blue-700 font-semibold transition duration-150" onclick="togglePanel(true)">
+                    Cadastre-se
+                </a>
+            </p>
+        </div>
+        
+        <!-- 2. FORMULÁRIO DE CADASTRO (Fixo na direita - visível quando o Painel Azul sai) -->
+        <div id="registerPanel" class="form-panel right-0 z-20">
+            <h2 class="text-3xl font-bold mb-2 text-dark-navy">Crie Sua Conta</h2>
+            <p class="text-gray-500 mb-8">Junte-se a nós e comece a gerenciar suas operações.</p>
+            
+            <form onsubmit="event.preventDefault()">
+                <!-- Campos -->
+                <div class="mb-4">
+                    <label for="register-nome" class="block text-sm font-medium text-gray-700 mb-1">Nome Completo</label>
+                    <input type="text" id="register-nome" placeholder="Seu nome"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary-blue focus:border-primary-blue"
+                        required>
                 </div>
 
-                <!-- 2. FORMULÁRIO DE CADASTRO (Fica na esquerda lógica) -->
-                <div class="form-panel">
-                    <h2 class="text-3xl font-bold mb-2 text-dark-navy">Crie Sua Conta</h2>
-                    <p class="text-gray-500 mb-8">Junte-se a nós e comece a gerenciar suas operações.</p>
-                    
-                    <form onsubmit="event.preventDefault()">
-                        <!-- Campo Nome -->
-                        <div class="mb-4">
-                            <label for="register-nome" class="block text-sm font-medium text-gray-700 mb-1">Nome Completo</label>
-                            <input type="text" id="register-nome" placeholder="Seu nome"
-                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary-blue focus:border-primary-blue"
-                                required>
-                        </div>
-
-                        <!-- Campo Email -->
-                        <div class="mb-4">
-                            <label for="register-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                            <input type="email" id="register-email" placeholder="seu.email@exemplo.com"
-                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary-blue focus:border-primary-blue"
-                                required>
-                        </div>
-                        
-                        <!-- Campo Senha -->
-                        <div class="mb-6">
-                            <label for="register-senha" class="block text-sm font-medium text-gray-700 mb-1">Crie uma Senha</label>
-                            <input type="password" id="register-senha" placeholder="********"
-                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary-blue focus:border-primary-blue"
-                                required>
-                        </div>
-                        
-                        <!-- Botão Cadastrar -->
-                        <button type="submit"
-                            class="w-full bg-dark-navy text-white py-3 rounded-lg font-semibold hover:bg-gray-700 transition duration-150">
-                            Cadastrar
-                        </button>
-                    </form>
-
-                    <!-- Link para Login -->
-                    <p class="mt-6 text-center text-sm text-gray-600">
-                        Já tem uma conta?
-                        <a href="#" id="toLogin" class="text-primary-blue hover:text-blue-700 font-semibold transition duration-150" onclick="togglePanel(false)">
-                            Faça Login
-                        </a>
-                    </p>
+                <div class="mb-4">
+                    <label for="register-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" id="register-email" placeholder="seu.email@exemplo.com"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary-blue focus:border-primary-blue"
+                        required>
                 </div>
+                
+                <div class="mb-6">
+                    <label for="register-senha" class="block text-sm font-medium text-gray-700 mb-1">Crie uma Senha</label>
+                    <input type="password" id="register-senha" placeholder="********"
+                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary-blue focus:border-primary-blue"
+                        required>
+                </div>
+                
+                <!-- Botão Cadastrar -->
+                <button type="submit"
+                    class="w-full bg-dark-navy text-white py-3 rounded-lg font-semibold hover:bg-gray-700 transition duration-150">
+                    Cadastrar
+                </button>
+            </form>
 
-            </div>
+            <!-- Link para Login -->
+            <p class="mt-6 text-center text-sm text-gray-600">
+                Já tem uma conta?
+                <a href="#" id="toLogin" class="text-primary-blue hover:text-blue-700 font-semibold transition duration-150" onclick="togglePanel(false)">
+                    Faça Login
+                </a>
+            </p>
         </div>
 
-        <!-- Painel de Boas-vindas (Sobreposição/Overlay) - w-1/2 e fixo na direita -->
-        <div id="overlayPanel" class="overlay-panel w-1/2 bg-dark-navy text-white p-10 rounded-r-xl absolute right-0 top-0 bottom-0 flex flex-col justify-center">
-            <h2 class="text-3xl font-bold mb-4">Bem-vindo(a)</h2>
-            <p class="text-gray-300 mb-8">
-                Acesse o seu painel de controle para gerenciar suas operações. Rápido e intuitivo, como a tela de "Caixa Rápido" que inspirou este design.
-            </p>
+        <!-- 3. Painel de Boas-vindas (Sobreposição/Overlay) - Começa na direita, desliza para a esquerda -->
+        <!-- NOTA: z-index 40 garante que ele está sempre no topo. -->
+        <div id="overlayPanel" class="overlay-panel right-0 bg-dark-navy text-white p-10 rounded-r-xl flex flex-col justify-center z-40">
             
-            <ul class="list-disc list-inside space-y-2 text-sm text-gray-300">
-                <li class="flex items-center">
-                    <span class="mr-2 text-yellow-400">•</span>Sistema Integrado
-                </li>
-                <li class="flex items-center">
-                    <span class="mr-2 text-yellow-400">•</span>Gestão Simplificada
-                </li>
-                <li class="flex items-center">
-                    <span class="mr-2 text-yellow-400">•</span>Suporte 24h
-                </li>
-            </ul>
-
-            <!-- Botão do Overlay que inverte a função dependendo do estado -->
-            <div class="mt-8 text-center">
-                <button id="overlayButton"
-                    class="bg-white text-dark-navy py-2 px-6 rounded-full font-semibold border-2 border-white hover:bg-gray-100 transition duration-150"
-                    onclick="togglePanel()">
-                    Cadastre-se
-                </button>
+            <!-- Conteúdo para o estado LOGIN -->
+            <div id="overlayLoginContent">
+                <h2 class="text-3xl font-bold mb-4">Bem-vindo(a)</h2>
+                <p class="text-gray-300 mb-8">
+                    Acesse o seu painel de controle para gerenciar suas operações.
+                </p>
+                <div class="mt-8 text-center">
+                    <button id="overlayButtonLogin"
+                        class="bg-white text-dark-navy py-2 px-6 rounded-full font-semibold border-2 border-white hover:bg-gray-100 transition duration-150"
+                        onclick="togglePanel(true)">
+                        Cadastre-se
+                    </button>
+                </div>
             </div>
+
+            <!-- Conteúdo para o estado CADASTRO (Aparece quando o painel azul se move) -->
+            <div id="overlayRegisterContent" class="hidden">
+                <h2 class="text-3xl font-bold mb-4">Que bom ter você aqui!</h2>
+                <p class="text-gray-300 mb-8">
+                    Para acessar, clique no botão e use sua conta existente.
+                </p>
+                 <div class="mt-8 text-center">
+                    <button id="overlayButtonRegister"
+                        class="bg-white text-dark-navy py-2 px-6 rounded-full font-semibold border-2 border-white hover:bg-gray-100 transition duration-150"
+                        onclick="togglePanel(false)">
+                        Fazer Login
+                    </button>
+                </div>
+            </div>
+
         </div>
 
     </div>
 
     <script>
-        const authCard = document.getElementById('authCard');
-        const overlayButton = document.getElementById('overlayButton');
-        const formWrapper = document.getElementById('formWrapper');
         const overlayPanel = document.getElementById('overlayPanel');
+        const overlayLoginContent = document.getElementById('overlayLoginContent');
+        const overlayRegisterContent = document.getElementById('overlayRegisterContent');
         
         /**
-         * Alterna entre os modos Login (padrão) e Cadastro (ativo).
-         * @param {boolean} [shouldActivate] - Força o estado (true para Cadastro, false para Login). Se omitido, inverte o estado atual.
+         * Define o estado inicial: Login na esquerda, Painel Azul na direita.
+         */
+        document.addEventListener('DOMContentLoaded', () => {
+            // Estado inicial: Painel Azul fica na direita (translateX(0) do seu ponto de origem, right-0)
+            overlayPanel.style.transform = 'translateX(0)';
+
+            // Conteúdo inicial
+            overlayLoginContent.classList.remove('hidden');
+            overlayRegisterContent.classList.add('hidden');
+        });
+
+        /**
+         * Alterna entre os modos Login (false) e Cadastro (true).
+         * @param {boolean} [shouldActivate] - Força o estado (true para Cadastro, false para Login).
          */
         function togglePanel(shouldActivate) {
-            // Previne o comportamento padrão do link
             event.preventDefault(); 
 
-            let isActive;
-            
-            if (typeof shouldActivate !== 'undefined') {
-                isActive = shouldActivate;
-            } else {
-                // Inverte o estado atual se shouldActivate não for fornecido
-                isActive = !authCard.classList.contains('active');
-            }
-
-            if (isActive) {
-                // MODO CADASTRO ATIVO
-                // O wrapper (200% de largura) desliza 50% para a esquerda, mostrando o Cadastro.
-                authCard.classList.add('active');
-                overlayButton.textContent = 'Fazer Login';
-                // O painel do overlay (direita) desliza 100% para a esquerda, cobrindo o Login e revelando o Cadastro.
+            if (shouldActivate) {
+                // MODO CADASTRO ATIVO: Cadastro (direita) é revelado. Painel Azul desliza para a esquerda.
+                
+                // Move o painel azul 100% para a esquerda (cobrindo o Login na esquerda)
                 overlayPanel.style.transform = 'translateX(-100%)'; 
+                
+                // Atualiza o conteúdo do overlay
+                overlayLoginContent.classList.add('hidden');
+                overlayRegisterContent.classList.remove('hidden');
+
             } else {
-                // MODO LOGIN ATIVO
-                // O wrapper volta à posição inicial, mostrando o Login.
-                authCard.classList.remove('active');
-                overlayButton.textContent = 'Cadastre-se';
-                // O painel do overlay volta à posição inicial (direita).
+                // MODO LOGIN ATIVO (REVERTE): Login (esquerda) é revelado. Painel Azul volta para a direita.
+                
+                // Tira a transformação do painel azul (volta para right-0)
                 overlayPanel.style.transform = 'translateX(0)'; 
+                
+                // Atualiza o conteúdo do overlay
+                overlayLoginContent.classList.remove('hidden');
+                overlayRegisterContent.classList.add('hidden');
             }
         }
     </script>
